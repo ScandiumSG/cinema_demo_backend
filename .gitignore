@@ -1,0 +1,8 @@
+# Ignore docker container data
+.containers/*
+
+# Visual studio configs
+*/.vs
+
+# Compiled .NET
+*/*/obj/*
