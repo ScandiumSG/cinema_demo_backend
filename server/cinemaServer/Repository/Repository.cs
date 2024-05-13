@@ -1,31 +1,60 @@
 ﻿
+using cinemaServer.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace cinemaServer.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        public Task<T?> Create(T entity)
+        private DataContext _context;
+        private DbSet<T> _dbSet;
+
+        public Repository(DataContext context) 
         {
-            throw new NotImplementedException();
+            _context = context;
+            _dbSet = context.Set<T>();
         }
 
-        public Task<T?> Delete(T entity)
+        /// <inheritdoc />
+        public async Task<List<T>> Get()
         {
-            throw new NotImplementedException();
+            return await _dbSet.ToListAsync();
         }
 
-        public Task<List<T>> Get()
+        /// <inheritdoc />
+        public async Task<T?> GetSpecific(object identifier)
         {
-            throw new NotImplementedException();
+            return await _dbSet.FindAsync(identifier);
+
         }
 
-        public Task<T?> GetSpecific(object identifier)
+        /// <inheritdoc />
+        public async Task<T?> Create(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Add(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public Task<T?> Update(T entity)
+        /// <inheritdoc />
+        public async Task<T?> Update(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity;
+        }
+
+        /// <inheritdoc />
+        public async Task<T?> Delete(object entityId)
+        {
+            T? foundEntity = await _dbSet.FindAsync(entityId);
+            if (foundEntity == null)
+            {
+                return null;
+            }
+            _dbSet.Remove(foundEntity);
+            await _context.SaveChangesAsync();
+            return foundEntity;
         }
     }
 }

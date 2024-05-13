@@ -30,10 +30,10 @@
         public Task<T?> Update(T entity);
 
         /// <summary>
-        /// Attempt to delete a provided entity from the database
+        /// Attempt to delete a provided entity from the database based on identifier
         /// </summary>
-        /// <param name="entity">The entity to be deleted</param>
+        /// <param name="entity">The entityId to be deleted</param>
         /// <returns>The deleted task if successfull, null otherwise</returns>
-        public Task<T?> Delete(T entity);
+        public Task<T?> Delete(object entityId);
     }
 }
