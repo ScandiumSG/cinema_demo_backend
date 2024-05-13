@@ -19,7 +19,6 @@ namespace cinemaServer.Endpoints
             screeningGroup.MapDelete("", DeleteScreening);
         }
 
-
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public static async Task<IResult> GetAll(Repository<Screening> repo) 
