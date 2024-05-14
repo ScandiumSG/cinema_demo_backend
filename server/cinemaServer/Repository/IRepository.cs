@@ -13,7 +13,7 @@
         /// Get all entities of object T
         /// </summary>
         /// <returns>List of all entities</returns>
-        public Task<List<T>> Get();
+        public Task<List<T>> Get(int? limit);
 
         /// <summary>
         /// Attempt to save a entity to the database

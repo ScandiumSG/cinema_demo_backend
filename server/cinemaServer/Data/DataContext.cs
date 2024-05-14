@@ -25,6 +25,9 @@ namespace cinemaServer.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            DatabaseSeeder seeder = new DatabaseSeeder(44662272, 100);
+            modelBuilder.Entity<Movie>().HasData(seeder.Movies);
         }
     }
 }

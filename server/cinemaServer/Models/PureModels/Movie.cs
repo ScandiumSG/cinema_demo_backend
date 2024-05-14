@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cinemaServer.Models.PureModels
 {
+    [Table("playable_movies")]
     public class Movie
     {
         [Key]
@@ -22,9 +23,9 @@ namespace cinemaServer.Models.PureModels
         [Column("release_year")]
         public int Year { get; set; }
 
-        public ICollection<IPerson> Actors { get; set; } = new List<IPerson>();
+        //public ICollection<IPerson> Actors { get; set; } = new List<IPerson>();
 
-        public IPerson? Director { get; set; }
+        //public IPerson? Director { get; set; }
 
         [Column("rating")]
         public ERatings Rating { get; set; } = 0;

@@ -16,9 +16,16 @@ namespace cinemaServer.Repository
         }
 
         /// <inheritdoc />
-        public async Task<List<T>> Get()
+        public async Task<List<T>> Get(int? limit)
         {
-            return await _dbSet.ToListAsync();
+            if (limit == null)
+            {
+                return await _dbSet.ToListAsync();
+            }
+            else 
+            {
+                return await _dbSet.Take((int)limit).ToListAsync();
+            }
         }
 
         /// <inheritdoc />
