@@ -1,9 +1,7 @@
-﻿namespace cinemaServer.Models.Request
+﻿namespace cinemaServer.Models.Request.Post
 {
-    public class PutScreeningDTO
+    public class PostScreeningDTO
     {
-        public int Id { get; set; }
-
         public int MovieId { get; set; }
 
         public int TheaterId { get; set; }

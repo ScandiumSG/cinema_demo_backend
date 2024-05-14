@@ -1,5 +1,6 @@
 ﻿using cinemaServer.Models.PureModels;
-using cinemaServer.Models.Request;
+using cinemaServer.Models.Request.Post;
+using cinemaServer.Models.Request.Put;
 using cinemaServer.Models.Response.Payload;
 using cinemaServer.Repository;
 using Microsoft.AspNetCore.Mvc;
@@ -10,20 +11,20 @@ namespace cinemaServer.Endpoints
     {
         public static void ScreeningEndpointConfiguration(this WebApplication app) 
         {
-            var screeningGroup = app.MapGroup("screening/");
+            var screeningGroup = app.MapGroup("screening");
 
-            screeningGroup.MapGet("", GetAll);
+            screeningGroup.MapGet("/", GetAll);
             screeningGroup.MapGet("/{id}", GetSpecific);
-            screeningGroup.MapPost("", PostScreening);
-            screeningGroup.MapPut("", PutScreening);
-            screeningGroup.MapDelete("", DeleteScreening);
+            screeningGroup.MapPost("/", PostScreening);
+            screeningGroup.MapPut("/", PutScreening);
+            screeningGroup.MapDelete("/", DeleteScreening);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public static async Task<IResult> GetAll(IRepository<Screening> repo) 
         {
-            List<Screening> screenings = await repo.Get();
+            List<Screening> screenings = await repo.Get(null);
             if (screenings.Count == 0) {
                 return TypedResults.NoContent();
             }
