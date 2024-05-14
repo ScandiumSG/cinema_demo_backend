@@ -1,5 +1,6 @@
 ﻿using cinemaServer.Models.PureModels;
 using cinemaServer.Models.PureModels.People;
+using cinemaServer.Models.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace cinemaServer.Data
@@ -34,7 +35,7 @@ namespace cinemaServer.Data
                 .HasForeignKey(s => s.TheaterId);
 
             // Seed database
-            DatabaseSeeder seeder = new DatabaseSeeder(4466222, 100, 20, 100);
+            DatabaseSeeder seeder = new DatabaseSeeder(4466222, 200, 30, 5000);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Theater>().HasData(seeder.Theaters);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
@@ -45,5 +46,6 @@ namespace cinemaServer.Data
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
     }
 }
