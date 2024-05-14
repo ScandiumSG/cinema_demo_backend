@@ -8,13 +8,17 @@ namespace cinemaServer.Models.PureModels
         [Column("screening_id")]
         public int Id { get; set; }
 
-        [ForeignKey("movie_id")]
+        [ForeignKey("MovieId")]
         [Column("movie_id")]
         public int MovieId { get; set; }
 
-        [ForeignKey("theater_id")]
+        public Movie Movie { get; set; }
+
+        [ForeignKey("TheaterId")]
         [Column("theater_id")]
         public int TheaterId { get; set; }
+
+        public Theater Theater { get; set; }
 
         public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
 

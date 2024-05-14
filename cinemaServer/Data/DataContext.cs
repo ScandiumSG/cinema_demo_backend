@@ -1,0 +1,49 @@
+﻿using cinemaServer.Models.PureModels;
+using cinemaServer.Models.PureModels.People;
+using Microsoft.EntityFrameworkCore;
+
+namespace cinemaServer.Data
+{
+    public class DataContext : DbContext
+    {
+        public DataContext(DbContextOptions<DataContext> options) : base(options) 
+        {
+
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // Define relationships
+
+            // Define composite key for screening
+            modelBuilder.Entity<Screening>().HasKey(s => new { s.Id, s.MovieId, s.TheaterId});
+            // Define relation to Movie
+            modelBuilder.Entity<Screening>()
+                .HasOne(s => s.Movie)
+                .WithMany()
+                .HasForeignKey(s => s.MovieId);
+            // Define relation to Theater
+            modelBuilder.Entity<Screening>()
+                .HasOne(s => s.Theater)
+                .WithMany()
+                .HasForeignKey(s => s.TheaterId);
+
+            // Seed database
+            DatabaseSeeder seeder = new DatabaseSeeder(4466222, 100, 20, 100);
+            modelBuilder.Entity<Movie>().HasData(seeder.Movies);
+            modelBuilder.Entity<Theater>().HasData(seeder.Theaters);
+            modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
+        }
+
+        public DbSet<Screening> Screenings { get; set; }
+        public DbSet<Theater> Theaters { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Ticket> Tickets { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+    }
+}

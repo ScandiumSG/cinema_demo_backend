@@ -5,11 +5,10 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "cinemaServer", "cinemaServer\cinemaServer.csproj", "{030517DF-C0F8-4AFD-9E89-A2A363D2E982}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root_items", "Root_items", "{0C664D07-90FC-4CBB-A075-4B92B132F2EE}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Root_Items", "Root_Items", "{161E14A6-9E78-48C3-8776-665456F126DF}"
 	ProjectSection(SolutionItems) = preProject
-		..\.gitignore = ..\.gitignore
-		..\docker-compose.yml = ..\docker-compose.yml
-		..\README.md = ..\README.md
+		.gitignore = .gitignore
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global

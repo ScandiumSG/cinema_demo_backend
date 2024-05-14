@@ -2,8 +2,10 @@
 .containers/*
 
 # Visual studio configs
-*/.vs
+.vs
 
 # Compiled .NET
-*/*/obj/*
-*/*/bin/*
+*/obj/*
+*/bin/*
+
+*/appsettings.json

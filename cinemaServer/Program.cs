@@ -18,6 +18,7 @@ builder.Services.AddDbContext<DataContext>
 
 builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
+builder.Services.AddScoped<IRepository<Theater>, Repository<Theater>>();
 
 var app = builder.Build();
 
@@ -34,5 +35,6 @@ app.UseHttpsRedirection();
 // Configure controllers/endpoints
 app.ScreeningEndpointConfiguration();
 app.MovieEndpointConfiguration();
+app.TheaterEndpointConfiguration();
 
 app.Run();
