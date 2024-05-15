@@ -1,8 +1,10 @@
 ﻿using cinemaServer.Models.PureModels;
 using cinemaServer.Models.Request.Post;
 using cinemaServer.Models.Request.Put;
+using cinemaServer.Models.Response;
 using cinemaServer.Models.Response.Payload;
 using cinemaServer.Repository;
+using cinemaServer.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cinemaServer.Endpoints
@@ -14,42 +16,46 @@ namespace cinemaServer.Endpoints
             var screeningGroup = app.MapGroup("screening");
 
             screeningGroup.MapGet("/", GetAll);
-            screeningGroup.MapGet("/{id}", GetSpecific);
+            screeningGroup.MapGet("/{screeningId}-{movieId}-{theaterId}", GetSpecific);
             screeningGroup.MapPost("/", PostScreening);
             screeningGroup.MapPut("/", PutScreening);
-            screeningGroup.MapDelete("/", DeleteScreening);
+            screeningGroup.MapDelete("/{screeningId}-{movieId}-{theaterId}", DeleteScreening);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public static async Task<IResult> GetAll(IRepository<Screening> repo) 
+        public static async Task<IResult> GetAll(ICompRepository<Screening> repo) 
         {
-            List<Screening> screenings = await repo.Get(null);
+            List<Screening> screenings = await repo.Get(100);
             if (screenings.Count == 0) {
                 return TypedResults.NoContent();
             }
 
-            Payload<List<Screening>> payload = new Payload<List<Screening>>(screenings);
+            Payload<List<ScreeningResponseDTO>> payload = new Payload<List<ScreeningResponseDTO>>(
+                screenings.Select(s => ResponseConverter.ConvertScreening(s)).ToList()
+            );
             return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> GetSpecific(IRepository<Screening> repo, int id) 
+        public static async Task<IResult> GetSpecific(ICompRepository<Screening> repo, int screeningId, int movieId, int theaterId) 
         {
-            Screening? screening = await repo.GetSpecific((object) id);
+            Screening? screening = await repo.GetSpecific(screeningId, movieId, theaterId);
             if (screening == null)
             {
                 return TypedResults.NotFound();
             }
 
-            Payload<Screening> payload = new Payload<Screening>(screening);
+            Payload<ScreeningResponseDTO> payload = new Payload<ScreeningResponseDTO>(
+                ResponseConverter.ConvertScreening(screening)
+            );
             return TypedResults.Ok(payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> PostScreening(IRepository<Screening> repo, PostScreeningDTO postObject) 
+        public static async Task<IResult> PostScreening(ICompRepository<Screening> repo, PostScreeningDTO postObject) 
         {
             Screening inputScreening = new Screening() 
             { 
@@ -64,13 +70,15 @@ namespace cinemaServer.Endpoints
                 return TypedResults.BadRequest();
             }
 
-            Payload<Screening> payload = new Payload<Screening>(savedScreening);
+            Payload<ScreeningResponseDTO> payload = new Payload<ScreeningResponseDTO>(
+                ResponseConverter.ConvertScreening(savedScreening)
+            );
             return TypedResults.Created($"/{savedScreening.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> PutScreening(IRepository<Screening> repo, PutScreeningDTO putObject) 
+        public static async Task<IResult> PutScreening(ICompRepository<Screening> repo, PutScreeningDTO putObject) 
         {
             Screening inputScreening = new Screening() 
             { 
@@ -86,22 +94,26 @@ namespace cinemaServer.Endpoints
                 return TypedResults.BadRequest();
             }
 
-            Payload<Screening> payload = new Payload<Screening>(updatedScreening);
+            Payload<ScreeningResponseDTO> payload = new Payload<ScreeningResponseDTO>(
+                ResponseConverter.ConvertScreening(updatedScreening)
+            );
             return TypedResults.Created($"/{updatedScreening.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> DeleteScreening(IRepository<Screening> repo, int screeningId) 
+        public static async Task<IResult> DeleteScreening(ICompRepository<Screening> repo, int screeningId, int movieId, int theaterId) 
         {
-            Screening? deletedScreening = await repo.Delete(screeningId);
+            Screening? deletedScreening = await repo.Delete(screeningId, movieId, theaterId);
 
             if (deletedScreening == null) 
             {
                 return TypedResults.NotFound();
             }
 
-            Payload<Screening> payload = new Payload<Screening>(deletedScreening);
+            Payload<ScreeningResponseDTO> payload = new Payload<ScreeningResponseDTO>(
+                ResponseConverter.ConvertScreening(deletedScreening)
+            );
             return TypedResults.Ok(payload);
         }
     }

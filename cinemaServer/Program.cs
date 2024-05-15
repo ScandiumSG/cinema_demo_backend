@@ -53,7 +53,7 @@ builder.Services.AddDbContext<DataContext>
         opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("dockerDB"))
     );
 
-builder.Services.AddScoped<IRepository<Screening>, Repository<Screening>>();
+builder.Services.AddScoped<ICompRepository<Screening>, CompositeRepository<Screening>>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Theater>, Repository<Theater>>();
 builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();

@@ -34,6 +34,10 @@ namespace cinemaServer.Data
                 .WithMany()
                 .HasForeignKey(s => s.TheaterId);
 
+            // Auto include for queries
+            modelBuilder.Entity<Screening>().Navigation(s => s.Movie).AutoInclude();
+            modelBuilder.Entity<Screening>().Navigation(s => s.Theater).AutoInclude();
+
             // Seed database
             DatabaseSeeder seeder = new DatabaseSeeder(4466222, 200, 30, 5000);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);

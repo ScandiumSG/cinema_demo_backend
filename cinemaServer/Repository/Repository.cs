@@ -1,13 +1,12 @@
-﻿
-using cinemaServer.Data;
+﻿using cinemaServer.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace cinemaServer.Repository
 {
     public class Repository<T> : IRepository<T> where T : class
     {
-        private DataContext _context;
-        private DbSet<T> _dbSet;
+        protected DataContext _context;
+        protected DbSet<T> _dbSet;
 
         public Repository(DataContext context) 
         {
