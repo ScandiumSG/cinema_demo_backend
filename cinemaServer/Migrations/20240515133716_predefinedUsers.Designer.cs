@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using cinemaServer.Data;
@@ -11,9 +12,11 @@ using cinemaServer.Data;
 namespace cinemaServer.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240515133716_predefinedUsers")]
+    partial class predefinedUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37194,37 +37197,15 @@ namespace cinemaServer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d5b2df57-2a6d-4695-a796-ef02553a01cb",
+                            Id = "d83bec77-fd53-4daa-ae27-6c0fe3de5dfb",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d2b57a07-f006-41fb-aab8-4bf56d1ada9e",
-                            Email = "Admin@cinema.com",
-                            EmailConfirmed = true,
+                            ConcurrencyStamp = "290e9f85-5c67-4be6-9369-fe75270c122a",
+                            EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@CINEMA.COM",
-                            NormalizedUserName = "ADMINUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ8RiW9K6/cXK2JMpb3pdbUIp+rp5HUxD5uV2KLlNxMqs4z3bXJhtFAvJ/6XQitGFQ==",
-                            PhoneNumberConfirmed = false,
-                            Role = 2,
-                            SecurityStamp = "OQCUZGYYKGBJDINLTFRRAQSOUXMUXYXF",
-                            TwoFactorEnabled = false,
-                            UserName = "Adminuser"
-                        },
-                        new
-                        {
-                            Id = "d34e655a-19a1-49f2-88c0-230260fe804b",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "11cce1df-b268-40f1-98f7-01c92eb131f1",
-                            Email = "test@user.com",
-                            EmailConfirmed = true,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "TEST@USER.COM",
-                            NormalizedUserName = "TESTUSER",
-                            PasswordHash = "AQAAAAIAAYagAAAAELuQbNsT63q7dBWGWD6oAEu+J8rWJpG1n7ucOr+XGoGzT/BdkXySzgkGKR4e8RVzrQ==",
                             PhoneNumberConfirmed = false,
                             Role = 0,
-                            SecurityStamp = "GDRATSDFDAXNYNQKPNMCPLLYXOZCTEBL",
-                            TwoFactorEnabled = false,
-                            UserName = "testuser"
+                            SecurityStamp = "d3758524-fb4a-4b41-b004-7551957c175a",
+                            TwoFactorEnabled = false
                         });
                 });
 

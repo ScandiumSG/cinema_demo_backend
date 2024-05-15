@@ -1,4 +1,8 @@
 ﻿using cinemaServer.Models.PureModels;
+using cinemaServer.Models.User;
+using Microsoft.AspNetCore.Identity;
+using System.Text;
+using System;
 
 namespace cinemaServer.Data
 {
@@ -74,6 +78,59 @@ namespace cinemaServer.Data
                 };
                 _screeningList.Add(newScreening);
             }
+        }
+
+        public List<ApplicationUser> GeneratePredefinedUsers() 
+        {
+            PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
+
+            // Identity Users
+            //Admin
+            ApplicationUser admin = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "Adminuser",
+                NormalizedUserName = "ADMINUSER",
+                Email = "Admin@cinema.com",
+                NormalizedEmail = "ADMIN@CINEMA.COM",
+                EmailConfirmed = true,
+                SecurityStamp = GenerateSecurityStamp(32),
+                Role = ERole.Admin
+            };
+
+            admin.PasswordHash = passwordHasher.HashPassword(admin, "adminpassword");
+
+
+            ApplicationUser testUser = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "testuser",
+                NormalizedUserName = "TESTUSER",
+                Email = "test@user.com",
+                NormalizedEmail = "TEST@USER.COM",
+                EmailConfirmed = true,
+                SecurityStamp = GenerateSecurityStamp(32),
+                Role = ERole.User,
+            };
+
+            testUser.PasswordHash = passwordHasher.HashPassword(testUser, "password");
+
+            List<ApplicationUser> users = new List<ApplicationUser>{ admin, testUser };
+
+            return users;
+        }
+
+        private string GenerateSecurityStamp(int length) 
+        {
+            string AllowedChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+            StringBuilder stringBuilder = new StringBuilder(length);
+            for (int i = 0; i < length; i++)
+            {
+                int randomIndex = _rng.Next(AllowedChars.Length);
+                stringBuilder.Append(AllowedChars[randomIndex]);
+            }
+            return stringBuilder.ToString();
         }
 
         public List<Screening> Screenings { get { return _screeningList; } }

@@ -14,7 +14,7 @@ namespace cinemaServer.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.EnableSensitiveDataLogging();
+            // optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,6 +43,8 @@ namespace cinemaServer.Data
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Theater>().HasData(seeder.Theaters);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
+
+            modelBuilder.Entity<ApplicationUser>().HasData(seeder.GeneratePredefinedUsers());
         }
 
         public DbSet<Screening> Screenings { get; set; }
