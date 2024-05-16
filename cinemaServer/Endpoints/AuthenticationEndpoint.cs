@@ -28,14 +28,14 @@ namespace cinemaServer.Endpoints
                 new ApplicationUser { 
                     UserName = request.Username,
                     Email = request.Email,
-                    Role = request.Role,
+                    Role = ERole.User,
                 }, request.Password!
             );
 
             if (res.Succeeded) 
             {
                 request.Password = "";
-                return TypedResults.Created("/", new { username = request.Username, email = request.Email, role = request.Role});
+                return TypedResults.Created("/", new { username = request.Username, email = request.Email, role = ERole.User});
             }
             return TypedResults.BadRequest(res.Errors.ToList());
         }

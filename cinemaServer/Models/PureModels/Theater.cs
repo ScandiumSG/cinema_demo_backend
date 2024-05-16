@@ -15,5 +15,7 @@ namespace cinemaServer.Models.PureModels
 
         [Column("name")]
         public string Name { get; set; }
+
+        public ICollection<Seat> Seats { get; set; }
     }
 }

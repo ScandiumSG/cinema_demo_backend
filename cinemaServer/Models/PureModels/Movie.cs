@@ -1,5 +1,4 @@
-﻿using cinemaServer.Models.PureModels.People;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cinemaServer.Models.PureModels

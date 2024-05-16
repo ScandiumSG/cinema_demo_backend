@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using cinemaServer.Models.PureModels;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 
@@ -11,5 +12,7 @@ namespace cinemaServer.Models.User
     {
         [Column("role")]
         public ERole Role { get; set; }
+
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }
