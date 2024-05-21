@@ -120,3 +120,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.Run();
+
+public partial class Program { } // needed for testing - please ignore
