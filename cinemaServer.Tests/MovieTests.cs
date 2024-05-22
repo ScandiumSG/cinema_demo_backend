@@ -3,11 +3,22 @@ using cinemaServer.Models.Response.Payload;
 using Microsoft.AspNetCore.Mvc.Testing;
 using NUnit.Framework;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace cinemaServer.Tests
 {
     public class MovieTests
     {
+        private JsonSerializerOptions jsonOptions;
+
+        [SetUp]
+        public void Setup()
+        {
+            jsonOptions = new JsonSerializerOptions
+            {
+                Converters = { new JsonStringEnumConverter() }
+            };
+        }
 
         [Test]
         public async Task TestListOfMovies()
@@ -17,7 +28,7 @@ namespace cinemaServer.Tests
 
             var res = await client.GetAsync("/movie?limit=33");
             var resAsString = await res.Content.ReadAsStringAsync();
-            Payload<List<Movie>> deserialized = JsonSerializer.Deserialize<Payload<List<Movie>>>(resAsString);
+            Payload<List<Movie>> deserialized = JsonSerializer.Deserialize<Payload<List<Movie>>>(resAsString, jsonOptions);
 
 
             // Assert payload functioned
@@ -37,7 +48,7 @@ namespace cinemaServer.Tests
 
             var res = await client.GetAsync("/movie/3");
             var resAsString = await res.Content.ReadAsStringAsync();
-            Payload<Movie> deserialized = JsonSerializer.Deserialize<Payload<Movie>>(resAsString);
+            Payload<Movie> deserialized = JsonSerializer.Deserialize<Payload<Movie>>(resAsString, jsonOptions);
 
             Console.WriteLine($"{deserialized.Data}");
 
