@@ -7,9 +7,11 @@ using cinemaServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,7 +52,7 @@ builder.Services.AddSwaggerGen(option =>
 
 builder.Services.AddDbContext<DataContext>
     (
-        opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("dockerDB"))
+        opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("elephantDB"))
     );
 
 builder.Services.AddScoped<ICompRepository<Screening>, CompositeRepository<Screening>>();
@@ -95,6 +97,14 @@ builder.Services.AddAuthentication(options =>
 
 // Add authorization services
 builder.Services.AddAuthorization();
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 
