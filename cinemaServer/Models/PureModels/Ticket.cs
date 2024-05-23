@@ -18,17 +18,17 @@ namespace cinemaServer.Models.PureModels
         [Column("theater_id")]
         public int TheaterId { get; set; }
 
-        public Screening Screening { get; set; }
+        public Screening? Screening { get; set; }
 
         [Column("customer_id")]
         public string? CustomerId { get; set; }
 
-        public ApplicationUser Customer {  get; set; }
+        public ApplicationUser? Customer {  get; set; }
 
         [Column("seat_id")]
         public int SeatId { get; set; }
 
-        public Seat Seat { get; set; }
+        public Seat? Seat { get; set; }
 
         /*
         [Column("seat")]

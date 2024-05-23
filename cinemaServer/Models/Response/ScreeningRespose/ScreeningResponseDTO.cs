@@ -6,11 +6,11 @@ namespace cinemaServer.Models.Response.ScreeningRespose
     {
         public int Id { get; set; }
 
-        public Movie Movie { get; set; }
+        public Movie? Movie { get; set; }
 
-        public TheaterDTO Theater { get; set; }
+        public TheaterDTO? Theater { get; set; }
 
-        public ICollection<Ticket> Tickets { get; set; }
+        public required ICollection<Ticket> Tickets { get; set; }
 
         public DateTime StartTime { get; set; }
     }

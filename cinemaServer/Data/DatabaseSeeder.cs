@@ -47,7 +47,7 @@ namespace cinemaServer.Data
                     Description = "A description",
                     Runtime = _rng.Next(45, 390),
                     Year = _rng.Next(1950, DateTime.Now.Year + 1),
-                    Rating = (ERatings)ratingValues.GetValue(_rng.Next(ratingValues.Length))
+                    Rating = (ERatings?)ratingValues.GetValue(_rng.Next(ratingValues.Length))
                 };
                 _movieList.Add(newMovie);
             }

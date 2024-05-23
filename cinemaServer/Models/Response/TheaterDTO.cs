@@ -11,8 +11,8 @@ namespace cinemaServer.Models.Response
 
         public int Capacity { get; set; }
 
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
-        public ICollection<SeatIncludedWithTheaterDTO> Seats { get; set; }
+        public ICollection<SeatIncludedWithTheaterDTO> Seats { get; set; } = new List<SeatIncludedWithTheaterDTO>();
     }
 }

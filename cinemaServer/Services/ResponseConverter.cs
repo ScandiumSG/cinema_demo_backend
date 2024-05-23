@@ -19,7 +19,8 @@ namespace cinemaServer.Services
             };
         }
 
-        public static TheaterDTO ConvertTheaterToDTO(Theater theater) 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+        public static TheaterDTO ConvertTheaterToDTO(Theater? theater) 
         {
             return new TheaterDTO()
             {
@@ -29,6 +30,7 @@ namespace cinemaServer.Services
                 Seats = theater.Seats.Select((s) => ConvertSeatToTheaterAccompanyDTO(s)).ToList(),
             };
         }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
         public static SeatIncludedWithTheaterDTO ConvertSeatToTheaterAccompanyDTO(Seat seat) 
         {
