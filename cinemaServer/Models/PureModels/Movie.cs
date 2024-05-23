@@ -15,11 +15,11 @@ namespace cinemaServer.Models.PureModels
 
         [Column("title")]
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
         [Column("description")]
         [JsonPropertyName("description")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Column("runtime")]
         [JsonPropertyName("runtime")]
@@ -35,6 +35,6 @@ namespace cinemaServer.Models.PureModels
 
         [Column("rating")]
         [JsonPropertyName("rating")]
-        public ERatings Rating { get; set; } = 0;
+        public ERatings? Rating { get; set; } = 0;
     }
 }
