@@ -1,8 +1,8 @@
 ﻿using cinemaServer.Models.PureModels;
 using cinemaServer.Models.Request.Post;
 using cinemaServer.Models.Request.Put;
-using cinemaServer.Models.Response;
 using cinemaServer.Models.Response.Payload;
+using cinemaServer.Models.Response.ScreeningRespose;
 using cinemaServer.Repository;
 using cinemaServer.Services;
 using Microsoft.AspNetCore.Mvc;
