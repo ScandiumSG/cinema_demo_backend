@@ -21,9 +21,9 @@ namespace cinemaServer.Repository
             return entity;
         }
 
-        public async Task<T?> Delete(int id1, int id2, int id3)
+        public async Task<T?> Delete(int id1, int id2)
         {
-            T? foundEntity = await _dbSet.FindAsync(id1, id2, id3);
+            T? foundEntity = await _dbSet.FindAsync(id1, id2);
             if (foundEntity == null)
             {
                 return null;
@@ -45,9 +45,9 @@ namespace cinemaServer.Repository
             }
         }
 
-        public async Task<T?> GetSpecific(int id1, int id2, int id3)
+        public async Task<T?> GetSpecific(int id1, int id2)
         {
-            return await _dbSet.FindAsync(id1, id2, id3);
+            return await _dbSet.FindAsync(id1, id2);
         }
 
         public async Task<T?> Update(T entity)
