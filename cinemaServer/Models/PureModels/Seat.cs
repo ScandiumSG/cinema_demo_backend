@@ -13,7 +13,7 @@ namespace cinemaServer.Models.PureModels
         [Column("theater_id")]
         public int TheaterId { get; set; }
 
-        public Theater Theater { get; set; }
+        public Theater? Theater { get; set; }
 
         [Column("row")]
         public int Row {  get; set; }
@@ -21,6 +21,6 @@ namespace cinemaServer.Models.PureModels
         [Column("seat_number")]
         public int SeatNumber { get; set; }
 
-        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
