@@ -14,8 +14,8 @@ namespace cinemaServer.Models.PureModels
         public int Capacity { get; set; }
 
         [Column("name")]
-        public string Name { get; set; }
+        public required string Name { get; set; }
 
-        public ICollection<Seat> Seats { get; set; }
+        public ICollection<Seat> Seats { get; set; } = new List<Seat>();
     }
 }
