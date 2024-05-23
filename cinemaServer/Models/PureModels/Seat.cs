@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cinemaServer.Models.PureModels
 {
-    [Table("seats")]
+    [Table("individual_seats")]
     public class Seat
     {
         [Key]

@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace cinemaServer.Models.PureModels
 {
-    [Table("playable_movies")]
+    [Table("movie_archive")]
     public class Movie
     {
         [Key]

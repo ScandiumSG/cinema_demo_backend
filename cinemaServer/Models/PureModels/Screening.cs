@@ -2,7 +2,7 @@
 
 namespace cinemaServer.Models.PureModels
 {
-    [Table("movie_screenings")]
+    [Table("screenings_archive")]
     public class Screening
     {
         [Column("screening_id")]
