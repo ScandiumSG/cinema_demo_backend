@@ -47,13 +47,13 @@
         /// </summary>
         /// <param name="identifier">The database identifiers for entities of class T</param>
         /// <returns>The found entity, null of none of that provided identifier was found</returns>
-        public Task<T?> GetSpecific(int id1, int id2, int id3);
+        public Task<T?> GetSpecific(int id1, int id2);
 
         /// <summary>
         /// Attempt to delete an entity from the database based on identifiers
         /// </summary>
         /// <param name="entity">The entityIds to be deleted</param>
         /// <returns>The deleted task if successfull, null otherwise</returns>
-        public Task<T?> Delete(int id1, int id2, int id3);
+        public Task<T?> Delete(int id1, int id2);
     }
 }

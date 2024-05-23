@@ -1,6 +1,6 @@
 ﻿using cinemaServer.Models.PureModels;
 
-namespace cinemaServer.Models.Response
+namespace cinemaServer.Models.Response.ScreeningRespose
 {
     public class ScreeningResponseDTO
     {
@@ -8,7 +8,7 @@ namespace cinemaServer.Models.Response
 
         public Movie Movie { get; set; }
 
-        public Theater Theater { get; set; }
+        public TheaterDTO Theater { get; set; }
 
         public ICollection<Ticket> Tickets { get; set; }
 

@@ -21,7 +21,7 @@ namespace cinemaServer.Data
             // Define relationships
             // SCREENING
             // Define composite key for screening
-            modelBuilder.Entity<Screening>().HasKey(s => new { s.Id, s.MovieId, s.TheaterId});
+            modelBuilder.Entity<Screening>().HasKey(s => new { s.Id, s.MovieId });
             // Define relation to Movie
             modelBuilder.Entity<Screening>()
                 .HasOne(s => s.Movie)
@@ -61,7 +61,7 @@ namespace cinemaServer.Data
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Screening)
                 .WithMany(s => s.Tickets)
-                .HasForeignKey(t => new { t.ScreeningId, t.MovieId, t.TheaterId });
+                .HasForeignKey(t => new { t.ScreeningId, t.MovieId });
             modelBuilder.Entity<Ticket>()
                 .HasOne(t => t.Seat)
                 .WithMany(s => s.Tickets)
@@ -70,9 +70,10 @@ namespace cinemaServer.Data
             // Auto include for queries
             modelBuilder.Entity<Screening>().Navigation(s => s.Movie).AutoInclude();
             modelBuilder.Entity<Screening>().Navigation(s => s.Theater).AutoInclude();
+            modelBuilder.Entity<Theater>().Navigation(t => t.Seats).AutoInclude();
 
             // Seed database
-            DatabaseSeeder seeder = new DatabaseSeeder(4466222, 200, 30, 30, 500, 5000);
+            DatabaseSeeder seeder = new DatabaseSeeder(123456, 20, 5, 50, 100, 500);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Theater>().HasData(seeder.Theaters);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);

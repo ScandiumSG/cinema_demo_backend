@@ -1,8 +1,8 @@
 ﻿using cinemaServer.Models.PureModels;
 using cinemaServer.Models.Request.Post;
 using cinemaServer.Models.Request.Put;
-using cinemaServer.Models.Response;
 using cinemaServer.Models.Response.Payload;
+using cinemaServer.Models.Response.ScreeningRespose;
 using cinemaServer.Repository;
 using cinemaServer.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -16,17 +16,17 @@ namespace cinemaServer.Endpoints
             var screeningGroup = app.MapGroup("screening");
 
             screeningGroup.MapGet("/", GetAll);
-            screeningGroup.MapGet("/{screeningId}-{movieId}-{theaterId}", GetSpecific);
+            screeningGroup.MapGet("/{screeningId}-{movieId}", GetSpecific);
             screeningGroup.MapPost("/", PostScreening);
             screeningGroup.MapPut("/", PutScreening);
-            screeningGroup.MapDelete("/{screeningId}-{movieId}-{theaterId}", DeleteScreening);
+            screeningGroup.MapDelete("/{screeningId}-{movieId}", DeleteScreening);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public static async Task<IResult> GetAll(ICompRepository<Screening> repo) 
         {
-            List<Screening> screenings = await repo.Get(100);
+            List<Screening> screenings = await repo.Get(20);
             if (screenings.Count == 0) {
                 return TypedResults.NoContent();
             }
@@ -39,9 +39,9 @@ namespace cinemaServer.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> GetSpecific(ICompRepository<Screening> repo, int screeningId, int movieId, int theaterId) 
+        public static async Task<IResult> GetSpecific(ICompRepository<Screening> repo, int screeningId, int movieId) 
         {
-            Screening? screening = await repo.GetSpecific(screeningId, movieId, theaterId);
+            Screening? screening = await repo.GetSpecific(screeningId, movieId);
             if (screening == null)
             {
                 return TypedResults.NotFound();
@@ -102,9 +102,9 @@ namespace cinemaServer.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> DeleteScreening(ICompRepository<Screening> repo, int screeningId, int movieId, int theaterId) 
+        public static async Task<IResult> DeleteScreening(ICompRepository<Screening> repo, int screeningId, int movieId) 
         {
-            Screening? deletedScreening = await repo.Delete(screeningId, movieId, theaterId);
+            Screening? deletedScreening = await repo.Delete(screeningId, movieId);
 
             if (deletedScreening == null) 
             {
