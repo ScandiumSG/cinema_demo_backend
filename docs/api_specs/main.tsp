@@ -104,6 +104,73 @@ namespace MovieEndpoint {
     };
 }
 
+@tag("Screening Endpoint")
+namespace ScreeningEndpoint {
+    @route("/screening")
+    @summary("Get all")
+    @doc("Get a array of screenings")
+    @get op GetAll(): {
+        @statusCode statusCode: 200;
+        @body screenings: screeningModels.multipleScreeningPayload;
+    } | {
+        @statusCode statusCode: 204;
+        @body error: errors.noContent;
+    };
+
+    @route("/screening/{screeningId}-{movieId}")
+    @summary("Get")
+    @doc("Get a specific screening, defined by both screeningId and movieId")
+    @get op Get(
+        @path screeningId: integer;
+        @path movieId: integer;
+    ): {
+        @statusCode statusCode: 200;
+        @body screening: screeningModels.specificScreeningPayload;
+    } | {
+        @statusCode statusCode: 404;
+        @body error: errors.notFound;
+    };
+
+    @route("/screening")
+    @summary("Post")
+    @doc("Create a new screening")
+    @post op Create(
+        @body screening: screeningModels.postScreening;
+    ): {
+        @statusCode statusCode: 201;
+        @body screening: screeningModels.specificScreeningPayload;
+    } | {
+        @statusCode statusCode: 400;
+        @body error: errors.badRequest;
+    };
+
+    @route("/screening")
+    @summary("Put")
+    @doc("Update a screening value")
+    @put op Update(
+        @body screenig: screeningModels.postScreening;
+    ): {
+        @statusCode statusCode: 201;
+        @body screening: screeningModels.specificScreeningPayload;
+    } | {
+        @statusCode statusCode: 400;
+        @body error: errors.badRequest;
+    };
+
+    @route("/screening/{screeningId}-{movieId}")
+    @summary("Delete")
+    @doc("Delete a screening")
+    @delete op Delete(
+        @path screeningId: integer;
+        @path movieId: integer;
+    ): {
+        @statusCode statusCode: 200;
+        @body screening: screeningModels.specificScreeningPayload;
+    } | {
+        @statusCode statusCode: 404;
+        @body error: errors.notFound; 
+    };
+}
 
 
 namespace authModels {
@@ -163,6 +230,52 @@ namespace movieModels {
         runtime: integer;
         year: integer;
         rating: string,
+    }
+}
+
+namespace screeningModels {
+    model multipleScreeningPayload {
+        status: string;
+        responseTime: string;
+        data: screening[];
+    }
+
+    model specificScreeningPayload {
+        status: string;
+        responseTime: string;
+        data: screening;
+    }
+
+    model screening {
+        id: integer;
+        movie: movieModels.movie;
+        theater: theaterModels.theater;
+        tickets: [];
+        startTime: string;
+    }
+
+    model postScreening {
+        movieId: integer;
+        theaterId: integer;
+        startTime: string;
+    }
+}
+
+
+namespace theaterModels {
+    model theater {
+        id: integer;
+        capacity: integer;
+        name: string;
+        seats: seatModels.seat[];
+    }
+}
+
+namespace seatModels {
+    model seat {
+        id: integer;
+        row: integer;
+        seatNumber: integer;
     }
 }
 

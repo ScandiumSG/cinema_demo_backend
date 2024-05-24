@@ -5,6 +5,7 @@ info:
 tags:
   - name: Authentication
   - name: Movie Endpoint
+  - name: Screening Endpoint
 paths:
   /auth/login:
     post:
@@ -180,6 +181,140 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/movieModels.specificMoviePayload'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.notFound'
+  /screening:
+    get:
+      tags:
+        - Screening Endpoint
+      operationId: ScreeningEndpoint_GetAll
+      summary: Get all
+      description: Get a array of screenings
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/screeningModels.multipleScreeningPayload'
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.noContent'
+    post:
+      tags:
+        - Screening Endpoint
+      operationId: ScreeningEndpoint_Create
+      summary: Post
+      description: Create a new screening
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/screeningModels.specificScreeningPayload'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.badRequest'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/screeningModels.postScreening'
+    put:
+      tags:
+        - Screening Endpoint
+      operationId: ScreeningEndpoint_Update
+      summary: Put
+      description: Update a screening value
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/screeningModels.specificScreeningPayload'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.badRequest'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/screeningModels.postScreening'
+  /screening/{screeningId}-{movieId}:
+    get:
+      tags:
+        - Screening Endpoint
+      operationId: ScreeningEndpoint_Get
+      summary: Get
+      description: Get a specific screening, defined by both screeningId and movieId
+      parameters:
+        - name: screeningId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: movieId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/screeningModels.specificScreeningPayload'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.notFound'
+    delete:
+      tags:
+        - Screening Endpoint
+      operationId: ScreeningEndpoint_Delete
+      summary: Delete
+      description: Delete a screening
+      parameters:
+        - name: screeningId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: movieId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/screeningModels.specificScreeningPayload'
         '404':
           description: The server cannot find the requested resource.
           content:
@@ -382,6 +517,98 @@ components:
           type: string
         data:
           $ref: '#/components/schemas/movieModels.movie'
+    screeningModels.multipleScreeningPayload:
+      type: object
+      required:
+        - status
+        - responseTime
+        - data
+      properties:
+        status:
+          type: string
+        responseTime:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/screeningModels.screening'
+    screeningModels.postScreening:
+      type: object
+      required:
+        - movieId
+        - theaterId
+        - startTime
+      properties:
+        movieId:
+          type: integer
+        theaterId:
+          type: integer
+        startTime:
+          type: string
+    screeningModels.screening:
+      type: object
+      required:
+        - id
+        - movie
+        - theater
+        - tickets
+        - startTime
+      properties:
+        id:
+          type: integer
+        movie:
+          $ref: '#/components/schemas/movieModels.movie'
+        theater:
+          $ref: '#/components/schemas/theaterModels.theater'
+        tickets:
+          type: array
+          items: {}
+        startTime:
+          type: string
+    screeningModels.specificScreeningPayload:
+      type: object
+      required:
+        - status
+        - responseTime
+        - data
+      properties:
+        status:
+          type: string
+        responseTime:
+          type: string
+        data:
+          $ref: '#/components/schemas/screeningModels.screening'
+    seatModels.seat:
+      type: object
+      required:
+        - id
+        - row
+        - seatNumber
+      properties:
+        id:
+          type: integer
+        row:
+          type: integer
+        seatNumber:
+          type: integer
+    theaterModels.theater:
+      type: object
+      required:
+        - id
+        - capacity
+        - name
+        - seats
+      properties:
+        id:
+          type: integer
+        capacity:
+          type: integer
+        name:
+          type: string
+        seats:
+          type: array
+          items:
+            $ref: '#/components/schemas/seatModels.seat'
 servers:
   - url: sgcinemad.azurewebsites.net
     description: Azure hosted site
