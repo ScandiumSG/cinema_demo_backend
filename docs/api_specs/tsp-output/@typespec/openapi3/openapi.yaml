@@ -3,12 +3,34 @@ info:
   title: Cinema Demo API
   version: 0.0.0
 tags:
-  - name: CinemaDemo
+  - name: Authentication
+  - name: Movie Endpoint
 paths:
+  /auth/login:
+    post:
+      tags:
+        - Authentication
+      operationId: Authentication_Login
+      summary: Login user
+      description: Login a user to the application, generating a JWT token
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authModels.loginResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authModels.loginRequest'
   /auth/register:
     post:
       tags:
-        - CinemaDemo
+        - Authentication
       operationId: Authentication_Register
       summary: Register user
       description: Register a new application user
@@ -25,7 +47,88 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/errors.usernameTaken'
+                type: array
+                items:
+                  $ref: '#/components/schemas/errors.usernameTaken'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/authModels.registerRequest'
+  /movie:
+    get:
+      tags:
+        - Movie Endpoint
+      operationId: MovieEndpoint_GetMovies
+      summary: Get all
+      description: Retrieve a list of movies
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movieModels.moviesPayload'
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.noContent'
+    post:
+      tags:
+        - Movie Endpoint
+      operationId: MovieEndpoint_Create
+      summary: Post
+      description: Create a new movie
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movieModels.specificMoviePayload'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.badRequest'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/movieModels.postMovie'
+  /movie/{id}:
+    get:
+      tags:
+        - Movie Endpoint
+      operationId: MovieEndpoint_GetMovie
+      summary: Get
+      description: Retrieve a specific movie based on movieId
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movieModels.specificMoviePayload'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.notFound'
 components:
   schemas:
     authModels.loginRequest:
@@ -92,7 +195,7 @@ components:
         code:
           type: number
           enum:
-            - 401
+            - 400
         message:
           type: string
           enum:
@@ -111,6 +214,20 @@ components:
           type: string
           enum:
             - email taken
+    errors.noContent:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: number
+          enum:
+            - 204
+        message:
+          type: string
+          enum:
+            - No content
     errors.notFound:
       type: object
       required:
@@ -139,6 +256,80 @@ components:
           type: string
           enum:
             - Username taken
+    movieModels.movie:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - runtime
+        - year
+        - rating
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        description:
+          type: string
+        runtime:
+          type: integer
+          format: int64
+        year:
+          type: integer
+          format: int64
+        rating:
+          type: string
+    movieModels.moviesPayload:
+      type: object
+      required:
+        - status
+        - responseTime
+        - data
+      properties:
+        status:
+          type: string
+        responseTime:
+          type: string
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/movieModels.movie'
+    movieModels.postMovie:
+      type: object
+      required:
+        - title
+        - description
+        - runtime
+        - year
+        - rating
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        runtime:
+          type: integer
+          format: int64
+        year:
+          type: integer
+          format: int64
+        rating:
+          type: string
+    movieModels.specificMoviePayload:
+      type: object
+      required:
+        - status
+        - responseTime
+        - data
+      properties:
+        status:
+          type: string
+        responseTime:
+          type: string
+        data:
+          $ref: '#/components/schemas/movieModels.movie'
 servers:
   - url: sgcinemad.azurewebsites.net
     description: Azure hosted site
