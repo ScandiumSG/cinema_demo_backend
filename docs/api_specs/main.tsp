@@ -73,6 +73,35 @@ namespace MovieEndpoint {
         @statusCode statusCode: 400;
         @body error: errors.badRequest;
     };
+
+    @route("/movie")
+    @summary("Put")
+    @doc("Update a movie")
+    @put op Update(
+        @body PutMovie: movieModels.postMovie
+    ): {
+        @statusCode statusCode: 201;
+        @body movie: movieModels.specificMoviePayload;
+    } | {
+        @statusCode statusCode: 400;
+        @body error: errors.badRequest;
+    } | {
+        @statusCode statusCode: 404;
+        @body error: errors.notFound;
+    };
+
+    @route("/movie")
+    @summary("Delete")
+    @doc("Delete a movie")
+    @delete op Delete(
+        @query movieId: integer
+    ): {
+        @statusCode statusCode: 200;
+        @body deletedMovie: movieModels.specificMoviePayload;
+    } | {
+        @statusCode statusCode: 404;
+        @body error: errors.notFound;
+    };
 }
 
 

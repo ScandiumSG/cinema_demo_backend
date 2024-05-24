@@ -103,6 +103,63 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/movieModels.postMovie'
+    put:
+      tags:
+        - Movie Endpoint
+      operationId: MovieEndpoint_Update
+      summary: Put
+      description: Update a movie
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movieModels.specificMoviePayload'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.badRequest'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.notFound'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/movieModels.postMovie'
+    delete:
+      tags:
+        - Movie Endpoint
+      operationId: MovieEndpoint_Delete
+      summary: Delete
+      description: Delete a movie
+      parameters:
+        - name: movieId
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/movieModels.specificMoviePayload'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.notFound'
   /movie/{id}:
     get:
       tags:
