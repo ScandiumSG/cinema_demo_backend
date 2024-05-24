@@ -325,17 +325,14 @@ components:
       properties:
         id:
           type: integer
-          format: int64
         title:
           type: string
         description:
           type: string
         runtime:
           type: integer
-          format: int64
         year:
           type: integer
-          format: int64
         rating:
           type: string
     movieModels.moviesPayload:
@@ -368,10 +365,8 @@ components:
           type: string
         runtime:
           type: integer
-          format: int64
         year:
           type: integer
-          format: int64
         rating:
           type: string
     movieModels.specificMoviePayload:

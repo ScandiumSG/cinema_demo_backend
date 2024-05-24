@@ -149,19 +149,19 @@ namespace movieModels {
     }
 
     model movie {
-        id: int64;
+        id: integer;
         title: string;
         description: string;
-        runtime: int64;
-        year: int64;
+        runtime: integer;
+        year: integer;
         rating: string
     }
 
     model postMovie {
         title: string;
         description: string;
-        runtime: int64;
-        year: int64;
+        runtime: integer;
+        year: integer;
         rating: string,
     }
 }
