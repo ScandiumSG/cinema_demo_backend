@@ -56,4 +56,9 @@
         /// <returns>The deleted task if successfull, null otherwise</returns>
         public Task<T?> Delete(int id1, int id2);
     }
+
+    public interface ICompUpcomingRepository<T> : ICompRepository<T> where T : class
+    {
+        public Task<IEnumerable<T>> GetUpcoming(int limit, DateTime timeCutoff);
+    }
 }

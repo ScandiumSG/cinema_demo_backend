@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using cinemaServer.Models.Response.SeatResponse;
 
-namespace cinemaServer.Models.Response
+namespace cinemaServer.Models.Response.TheaterResponse
 {
     public class TheaterDTO
     {

@@ -1,7 +1,7 @@
 ﻿using cinemaServer.Models.PureModels;
-using cinemaServer.Models.Response;
 using cinemaServer.Models.Response.ScreeningRespose;
 using cinemaServer.Models.Response.SeatResponse;
+using cinemaServer.Models.Response.TheaterResponse;
 
 namespace cinemaServer.Services
 {
@@ -15,6 +15,18 @@ namespace cinemaServer.Services
                 Movie = screening.Movie,
                 Theater = ConvertTheaterToDTO(screening.Theater),
                 Tickets = screening.Tickets,
+                StartTime = screening.StartTime,
+            };
+        }
+
+        public static ScreeningResponseShortenedDTO ConvertShortenedScreening(Screening screening) 
+        {
+            return new ScreeningResponseShortenedDTO()
+            {
+                Id = screening.Id,
+                Movie = screening.Movie,
+                Theater = ConvertTheaterToShortenedDTO(screening.Theater),
+                TicketsSold = screening.Tickets.Count(),
                 StartTime = screening.StartTime,
             };
         }
@@ -39,6 +51,16 @@ namespace cinemaServer.Services
                 Id = seat.Id,
                 Row = seat.Row,
                 SeatNumber = seat.SeatNumber,
+            };
+        }
+
+        public static TheaterShortenedDTO ConvertTheaterToShortenedDTO(Theater theater) 
+        {
+            return new TheaterShortenedDTO()
+            {
+                Id = theater.Id,
+                Capacity = theater.Capacity,
+                Name = theater.Name,
             };
         }
     }

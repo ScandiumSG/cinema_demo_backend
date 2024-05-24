@@ -55,7 +55,7 @@ builder.Services.AddDbContext<DataContext>
         opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("elephantDB"))
     );
 
-builder.Services.AddScoped<ICompRepository<Screening>, CompositeRepository<Screening>>();
+builder.Services.AddScoped<ICompUpcomingRepository<Screening>, ScreeningRepository>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Theater>, Repository<Theater>>();
 builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();
