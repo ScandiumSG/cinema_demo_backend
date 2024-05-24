@@ -20,7 +20,7 @@ namespace cinemaServer.Endpoints
             screeningGroup.MapPost("/", PostScreening);
             screeningGroup.MapPut("/", PutScreening);
             screeningGroup.MapDelete("/{screeningId}-{movieId}", DeleteScreening);
-            screeningGroup.MapGet("/upcoming/{limit}", GetUpcomingScreenings);
+            screeningGroup.MapGet("/upcoming/{limitDate}", GetUpcomingScreenings);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -118,13 +118,22 @@ namespace cinemaServer.Endpoints
             return TypedResults.Ok(payload);
         }
 
-        public static async Task<IResult> GetUpcomingScreenings(ICompUpcomingRepository<Screening> repo, int limit, DateTime limitDate)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public static async Task<IResult> GetUpcomingScreenings(ICompUpcomingRepository<Screening> repo, DateTime limitDate, int limit = 10)
         {
             IEnumerable<Screening> upcomingScreenings = await repo.GetUpcoming(limit, limitDate);
 
-            IEnumerable<ScreeningResponseShortenedDTO> res = upcomingScreenings.Select(s => ResponseConverter.ConvertShortenedScreening(s)).ToList();
+            if (upcomingScreenings.Count() == 0) 
+            {
+                return TypedResults.NoContent();
+            }
 
-            return TypedResults.Ok(res);
+            IEnumerable<ScreeningResponseShortenedDTO> screeningsShortened = upcomingScreenings.Select((s) => ResponseConverter.ConvertShortenedScreening(s)).ToList();
+
+            Payload<IEnumerable<ScreeningResponseShortenedDTO>> payload = new Payload<IEnumerable<ScreeningResponseShortenedDTO>>(screeningsShortened);
+
+            return TypedResults.Ok(payload);
         }
     }
 }
