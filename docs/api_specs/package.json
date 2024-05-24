@@ -1,0 +1,20 @@
+{
+  "name": "cinema_demo_backend",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "generate": "npm install && npm run typespec_gen && npm run redocly",
+    "typespec_gen": "tsp compile .",
+    "redocly": "redocly build-docs ./tsp-output/@typespec/openapi3/openapi.yaml -o api-specs.html"
+  },
+  "dependencies": {
+    "@typespec/compiler": "latest",
+    "@typespec/http": "latest",
+    "@typespec/rest": "latest",
+    "@typespec/openapi3": "latest"
+  },
+  "private": true,
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.13.4"
+  }
+}

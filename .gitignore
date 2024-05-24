@@ -11,3 +11,6 @@
 */appsettings.json
 */appsettings.*.json
 !*/appsettings.example.json
+
+
+docs/api_specs/node_modules
