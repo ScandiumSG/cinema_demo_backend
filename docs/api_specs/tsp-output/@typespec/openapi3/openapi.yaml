@@ -1,0 +1,145 @@
+openapi: 3.0.0
+info:
+  title: Cinema Demo API
+  version: 0.0.0
+tags:
+  - name: CinemaDemo
+paths:
+  /auth/register:
+    post:
+      tags:
+        - CinemaDemo
+      operationId: Authentication_Register
+      summary: Register user
+      description: Register a new application user
+      parameters: []
+      responses:
+        '201':
+          description: The request has succeeded and a new resource has been created as a result.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authModels.registerResponse'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errors.usernameTaken'
+components:
+  schemas:
+    authModels.loginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    authModels.loginResponse:
+      type: object
+      required:
+        - id
+        - username
+        - email
+        - role
+        - token
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        token:
+          type: string
+    authModels.registerRequest:
+      type: object
+      required:
+        - email
+        - username
+        - password
+      properties:
+        email:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+    authModels.registerResponse:
+      type: object
+      required:
+        - email
+        - username
+        - role
+      properties:
+        email:
+          type: string
+        username:
+          type: string
+        role:
+          type: string
+    errors.badRequest:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: number
+          enum:
+            - 401
+        message:
+          type: string
+          enum:
+            - Bad request
+    errors.emailTaken:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: number
+          enum:
+            - 400
+        message:
+          type: string
+          enum:
+            - email taken
+    errors.notFound:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: number
+          enum:
+            - 404
+        message:
+          type: string
+          enum:
+            - Not found
+    errors.usernameTaken:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: number
+          enum:
+            - 400
+        message:
+          type: string
+          enum:
+            - Username taken
+servers:
+  - url: sgcinemad.azurewebsites.net
+    description: Azure hosted site
+    variables: {}
