@@ -56,12 +56,27 @@ namespace cinemaServer.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> PostScreening(ICompUpcomingRepository<Screening> repo, PostScreeningDTO postObject) 
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> PostScreening(ICompUpcomingRepository<Screening> repo, IRepository<Movie> movieRepo, IRepository<Theater> theaterRepo, PostScreeningDTO postObject) 
         {
+            Movie? dbMovie = await movieRepo.GetSpecific(postObject.MovieId);
+            if (dbMovie == null) 
+            {
+                return TypedResults.NotFound();
+            }
+
+            Theater? dbTheater = await theaterRepo.GetSpecific(postObject.TheaterId);
+            if (dbTheater == null)
+            {
+                return TypedResults.NotFound();
+            }
+
             Screening inputScreening = new Screening() 
             { 
                 MovieId = postObject.MovieId,
+                Movie = dbMovie,
                 TheaterId = postObject.TheaterId,
+                Theater = dbTheater,
                 StartTime = postObject.StartTime,
             };
 
@@ -79,13 +94,27 @@ namespace cinemaServer.Endpoints
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public static async Task<IResult> PutScreening(ICompUpcomingRepository<Screening> repo, PutScreeningDTO putObject) 
+        public static async Task<IResult> PutScreening(ICompUpcomingRepository<Screening> repo, IRepository<Movie> movieRepo, IRepository<Theater> theaterRepo, PutScreeningDTO putObject) 
         {
+            Movie? dbMovie = await movieRepo.GetSpecific(putObject.MovieId);
+            if (dbMovie == null)
+            {
+                return TypedResults.NotFound();
+            }
+
+            Theater? dbTheater = await theaterRepo.GetSpecific(putObject.TheaterId);
+            if (dbTheater == null)
+            {
+                return TypedResults.NotFound();
+            }
+
             Screening inputScreening = new Screening() 
             { 
                 Id = putObject.Id,
                 MovieId = putObject.MovieId,
+                Movie = dbMovie,
                 TheaterId   = putObject.TheaterId,
+                Theater = dbTheater,
                 StartTime = putObject.StartTime,
             };
             Screening? updatedScreening = await repo.Update(inputScreening);
