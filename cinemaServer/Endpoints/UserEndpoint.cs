@@ -48,7 +48,9 @@ namespace cinemaServer.Endpoints
             }
 
             dbUser.Email = putUser.Email ?? dbUser.Email;
+            dbUser.NormalizedEmail = putUser.Email!.ToUpper() ?? dbUser.NormalizedEmail;
             dbUser.UserName = putUser.Username ?? dbUser.UserName;
+            dbUser.NormalizedUserName = putUser.Username!.ToUpper() ?? dbUser.NormalizedUserName;
 
             ApplicationUser? updatedUser = await repo.Update(dbUser);
 
