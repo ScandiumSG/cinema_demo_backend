@@ -9,21 +9,22 @@ namespace cinemaServer.Endpoints
 {
     public static class UserEndpoint
     {
-        public static void UserEndpointConfiguration(this WebApplication app) 
+        public static void UserEndpointConfiguration(this WebApplication app)
         {
             var userGroup = app.MapGroup("/user");
 
             userGroup.MapPut("/change", UpdateUserInfo);
+            userGroup.MapPut("/changepw", UpdateUserPassword);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> UpdateUserInfo(IRepository<ApplicationUser> repo, UserManager<ApplicationUser> userManager, PutUserDTO putUser) 
+        public static async Task<IResult> UpdateUserInfo(IRepository<ApplicationUser> repo, UserManager<ApplicationUser> userManager, PutUserDTO putUser)
         {
             ApplicationUser? dbUser = await repo.GetSpecific(putUser.Id);
-            if (dbUser == null) 
+            if (dbUser == null)
             {
                 return TypedResults.NotFound();
             }
@@ -33,7 +34,7 @@ namespace cinemaServer.Endpoints
                 return TypedResults.BadRequest("Too many failed attempts, try again later.");
             }
 
-            
+
 
             bool validPassword = await userManager.CheckPasswordAsync(dbUser, putUser.Password);
             if (!validPassword)
@@ -41,7 +42,7 @@ namespace cinemaServer.Endpoints
                 await userManager.AccessFailedAsync(dbUser);
                 return TypedResults.BadRequest("Invalid password");
             }
-            else 
+            else
             {
                 await userManager.ResetAccessFailedCountAsync(dbUser);
             }
@@ -53,6 +54,32 @@ namespace cinemaServer.Endpoints
 
             Payload<ApplicationUser> payload = new Payload<ApplicationUser>(updatedUser!);
             return TypedResults.Created("/", payload);
+        }
+
+        public static async Task<IResult> UpdateUserPassword(IRepository<ApplicationUser> repo, UserManager<ApplicationUser> userManager, PutUserPwDTO pwRequest) 
+        {
+            ApplicationUser? dbUser = await repo.GetSpecific(pwRequest.Id);
+            if (dbUser == null) 
+            {
+                return TypedResults.NotFound();
+            }
+
+            bool passwordMatch = await userManager.CheckPasswordAsync(dbUser, pwRequest.OldPassword);
+            if (!passwordMatch) 
+            {
+                return TypedResults.BadRequest();
+            }
+
+            PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
+            dbUser.PasswordHash = hasher.HashPassword(dbUser, pwRequest.NewPassword);
+            IdentityResult updatedUser = await userManager.UpdateAsync(dbUser);
+            if (updatedUser.Succeeded)
+            {
+                return TypedResults.Created("/", dbUser);
+            } else 
+            {
+                return TypedResults.BadRequest();
+            }
         }
     }
 }
