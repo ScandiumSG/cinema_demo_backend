@@ -63,14 +63,17 @@ builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationU
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
 
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(opt =>
 {
-    options.SignIn.RequireConfirmedAccount = false;
-    options.User.RequireUniqueEmail = true;
-    options.Password.RequireDigit = false;
-    options.Password.RequiredLength = 6;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequireUppercase = false;
+    opt.SignIn.RequireConfirmedAccount = false;
+    opt.User.RequireUniqueEmail = true;
+    opt.Password.RequireDigit = false;
+    opt.Password.RequiredLength = 6;
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequireUppercase = false;
+    opt.Lockout.AllowedForNewUsers = true;
+    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    opt.Lockout.MaxFailedAccessAttempts = 5;
 })
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<DataContext>();
@@ -122,6 +125,7 @@ app.UseHttpsRedirection();
 app.ScreeningEndpointConfiguration();
 app.MovieEndpointConfiguration();
 app.TheaterEndpointConfiguration();
+app.UserEndpointConfiguration();
 
 //Configure auth endpoint
 app.AuthenticationEndpointConfiguration();

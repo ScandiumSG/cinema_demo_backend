@@ -29,6 +29,7 @@ namespace cinemaServer.Endpoints
                     UserName = request.Username,
                     Email = request.Email,
                     Role = ERole.User,
+                    LockoutEnabled = true,
                 }, request.Password!
             );
 
@@ -50,13 +51,24 @@ namespace cinemaServer.Endpoints
             ApplicationUser? managedUser = await userManager.FindByEmailAsync(request.Email!);
             if (managedUser == null) 
             {
+                
                 return TypedResults.BadRequest("Invalid login email.");
             }
 
-            bool validPassword = await userManager.CheckPasswordAsync(managedUser, request.Password!);
-            if (!validPassword) 
+            if (await userManager.IsLockedOutAsync(managedUser)) 
             {
+                return TypedResults.BadRequest("Too many failed attempts, try again later.");
+            }
+
+            bool validPassword = await userManager.CheckPasswordAsync(managedUser, request.Password!);
+            if (!validPassword)
+            {
+                await userManager.AccessFailedAsync(managedUser);
                 return TypedResults.BadRequest("Invalid login credentials.");
+            }
+            else
+            {
+                await userManager.ResetAccessFailedCountAsync(managedUser);
             }
 
             ApplicationUser? dbUser = dataContext.Users.FirstOrDefault(u => u.Email == request.Email);
