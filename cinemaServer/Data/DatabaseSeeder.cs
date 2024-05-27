@@ -170,7 +170,8 @@ namespace cinemaServer.Data
                     NormalizedEmail = $"user{i}@cinema.com".ToUpper(),
                     EmailConfirmed = true,
                     SecurityStamp = GenerateSecurityStamp(32),
-                    Role = ERole.User
+                    Role = ERole.User,
+                    LockoutEnabled = true,
                 };
 
                 newUser.PasswordHash = passwordHasher.HashPassword(newUser, "dummypassword");
