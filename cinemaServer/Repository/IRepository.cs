@@ -61,6 +61,6 @@
     {
         public Task<IEnumerable<T>> GetUpcoming(int limit, DateTime timeCutoff);
 
-        public Task<IEnumerable<T>> GetSpecificUpcoming(int specificObjectId, int limit, DateTime timeCutoff);
+        public Task<IEnumerable<T>> GetSpecificUpcoming(int objectSpecifier, int limit, DateTime timeCutoff);
     }
 }
