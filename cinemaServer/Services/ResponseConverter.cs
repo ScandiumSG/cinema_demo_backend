@@ -1,7 +1,10 @@
-﻿using cinemaServer.Models.PureModels;
+﻿using cinemaServer.Models.Authentication;
+using cinemaServer.Models.PureModels;
 using cinemaServer.Models.Response.ScreeningRespose;
 using cinemaServer.Models.Response.SeatResponse;
 using cinemaServer.Models.Response.TheaterResponse;
+using cinemaServer.Models.Response.UserResponse;
+using cinemaServer.Models.User;
 
 namespace cinemaServer.Services
 {
@@ -61,6 +64,26 @@ namespace cinemaServer.Services
                 Id = theater.Id,
                 Capacity = theater.Capacity,
                 Name = theater.Name,
+            };
+        }
+
+        public static UserChangeDTO ConvertApplicationUserToDTO(ApplicationUser user) 
+        {
+            return new UserChangeDTO()
+            {
+                Email = user.Email!,
+                Username = user.UserName!,
+            };
+        }
+
+        public static AuthResponse ConvertApplicationUserToAuthResponse(ApplicationUser user) 
+        {
+            return new AuthResponse()
+            {
+                Id = user.Id,
+                Username = user.UserName,
+                Email = user.Email,
+                Role = user.Role,
             };
         }
     }
