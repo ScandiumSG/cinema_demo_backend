@@ -1,7 +1,9 @@
 ﻿using cinemaServer.Models.Request.Put;
 using cinemaServer.Models.Response.Payload;
+using cinemaServer.Models.Response.UserResponse;
 using cinemaServer.Models.User;
 using cinemaServer.Repository;
+using cinemaServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -53,8 +55,9 @@ namespace cinemaServer.Endpoints
             dbUser.NormalizedUserName = putUser.Username!.ToUpper() ?? dbUser.NormalizedUserName;
 
             ApplicationUser? updatedUser = await repo.Update(dbUser);
+            UserChangeDTO updatedUserDTO = ResponseConverter.ConvertApplicationUserToDTO(updatedUser!);
 
-            Payload<ApplicationUser> payload = new Payload<ApplicationUser>(updatedUser!);
+            Payload<UserChangeDTO> payload = new Payload<UserChangeDTO>(updatedUserDTO!);
             return TypedResults.Created("/", payload);
         }
 
@@ -75,9 +78,13 @@ namespace cinemaServer.Endpoints
             PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
             dbUser.PasswordHash = hasher.HashPassword(dbUser, pwRequest.NewPassword);
             IdentityResult updatedUser = await userManager.UpdateAsync(dbUser);
+
+            UserChangeDTO updatedUserDTO = ResponseConverter.ConvertApplicationUserToDTO(dbUser!);
+            Payload<UserChangeDTO> payload = new Payload<UserChangeDTO>(updatedUserDTO!);
+
             if (updatedUser.Succeeded)
             {
-                return TypedResults.Created("/", dbUser);
+                return TypedResults.Created("/", payload);
             } else 
             {
                 return TypedResults.BadRequest();
