@@ -9,6 +9,7 @@ namespace cinemaServer.Repository
         protected DataContext _context;
         protected DbSet<Screening> _dbSet;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>")]
         public ScreeningRepository(DataContext context)
         {
             _context = context;

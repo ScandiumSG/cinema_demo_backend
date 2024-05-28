@@ -154,7 +154,7 @@ namespace cinemaServer.Endpoints
         {
             IEnumerable<Screening> upcomingScreenings = await repo.GetUpcoming(limit, limitDate);
 
-            if (upcomingScreenings.Count() == 0) 
+            if (upcomingScreenings.Any()) 
             {
                 return TypedResults.NoContent();
             }
@@ -173,7 +173,7 @@ namespace cinemaServer.Endpoints
             IEnumerable<Screening> upcomingScreenings = await repo.GetSpecificUpcoming(movieId, limit, limitDate);
 
 
-            if (upcomingScreenings.Count() == 0)
+            if (upcomingScreenings.Any())
             {
                 return TypedResults.NoContent();
             }
