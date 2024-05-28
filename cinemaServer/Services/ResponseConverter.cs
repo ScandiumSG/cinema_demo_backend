@@ -28,7 +28,7 @@ namespace cinemaServer.Services
             {
                 Id = screening.Id,
                 Movie = screening.Movie,
-                Theater = ConvertTheaterToShortenedDTO(screening.Theater),
+                Theater = ConvertTheaterToShortenedDTO(screening.Theater!),
                 TicketsSold = screening.Tickets.Count(),
                 StartTime = screening.StartTime,
             };
