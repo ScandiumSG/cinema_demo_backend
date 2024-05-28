@@ -153,7 +153,26 @@ namespace cinemaServer.Endpoints
         {
             IEnumerable<Screening> upcomingScreenings = await repo.GetUpcoming(limit, limitDate);
 
-            if (upcomingScreenings.Count() == 0) 
+            if (!upcomingScreenings.Any()) 
+            {
+                return TypedResults.NoContent();
+            }
+
+            IEnumerable<ScreeningResponseShortenedDTO> screeningsShortened = upcomingScreenings.Select((s) => ResponseConverter.ConvertShortenedScreening(s)).ToList();
+
+            Payload<IEnumerable<ScreeningResponseShortenedDTO>> payload = new Payload<IEnumerable<ScreeningResponseShortenedDTO>>(screeningsShortened);
+
+            return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public static async Task<IResult> GetUpcomingScreeningsOfMovie(ICompUpcomingRepository<Screening> repo, int movieId, DateTime limitDate, int limit = 10) 
+        {
+            IEnumerable<Screening> upcomingScreenings = await repo.GetSpecificUpcoming(movieId, limit, limitDate);
+
+
+            if (!upcomingScreenings.Any())
             {
                 return TypedResults.NoContent();
             }
