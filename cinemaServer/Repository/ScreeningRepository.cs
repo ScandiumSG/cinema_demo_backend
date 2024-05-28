@@ -9,6 +9,7 @@ namespace cinemaServer.Repository
         protected DataContext _context;
         protected DbSet<Screening> _dbSet;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>")]
         public ScreeningRepository(DataContext context)
         {
             _context = context;
@@ -62,6 +63,15 @@ namespace cinemaServer.Repository
         {
             return await _dbSet
                     .Where((e) => e.StartTime > timeCutoff)
+                    .OrderBy((e) => e.StartTime)
+                    .Take(limit)
+                    .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Screening>> GetSpecificUpcoming(int specificObjectId, int limit, DateTime timeCutoff)
+        {
+            return await _dbSet
+                    .Where((e) => e.StartTime > timeCutoff && e.MovieId  == specificObjectId)
                     .OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();

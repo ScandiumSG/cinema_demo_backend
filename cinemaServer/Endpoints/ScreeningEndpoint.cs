@@ -21,6 +21,7 @@ namespace cinemaServer.Endpoints
             screeningGroup.MapPut("/", PutScreening);
             screeningGroup.MapDelete("/{screeningId}-{movieId}", DeleteScreening);
             screeningGroup.MapGet("/upcoming/{limitDate}", GetUpcomingScreenings);
+            screeningGroup.MapGet("/upcoming/{movieId}/{limitDate}", GetUpcomingScreeningsOfMovie);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]

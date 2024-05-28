@@ -6,6 +6,7 @@ namespace cinemaServer.Data
 {
     public class DataContext : DbContext
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0290:Use primary constructor", Justification = "<Pending>")]
         public DataContext(DbContextOptions<DataContext> options) : base(options) 
         {
 
