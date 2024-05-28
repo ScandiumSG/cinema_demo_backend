@@ -30,7 +30,7 @@ namespace cinemaServer.Endpoints
                 return TypedResults.NoContent();
             }
 
-            Payload<List<Movie>> payload = new Payload<List<Movie>>(movies.ToList());
+            Payload<List<Movie>> payload = new Payload<List<Movie>>([.. movies]);
             return TypedResults.Ok(payload);
         }
 
