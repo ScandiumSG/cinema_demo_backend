@@ -69,7 +69,7 @@ namespace cinemaServer.Endpoints
             bool passwordMatch = await userManager.CheckPasswordAsync(dbUser, pwRequest.OldPassword);
             if (!passwordMatch) 
             {
-                return TypedResults.BadRequest();
+                return TypedResults.BadRequest("Invalid password provided.");
             }
 
             PasswordHasher<ApplicationUser> hasher = new PasswordHasher<ApplicationUser>();
