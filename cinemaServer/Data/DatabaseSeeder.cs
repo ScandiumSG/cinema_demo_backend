@@ -1,4 +1,5 @@
-﻿using cinemaServer.Models.PureModels;
+﻿using cinemaServer.Data.SeedData;
+using cinemaServer.Models.PureModels;
 using cinemaServer.Models.User;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
@@ -75,9 +76,9 @@ namespace cinemaServer.Data
             int rows = _rng.Next(3, Math.Max(6, numberOfSeats / 6));
             int seatPerRow = numberOfSeats / rows;
 
-            for (int i = 1; i < numberOfSeats; i++) 
+            for (int i = 1; i <= numberOfSeats; i++) 
             {
-                int RowNumber = i - 1 / seatPerRow + 1;
+                int RowNumber = (i - 1) / seatPerRow + 1;
                 int seatNumber = (i - 1) % seatPerRow + 1;
 
                 Seat newSeat = new Seat() 
@@ -104,7 +105,7 @@ namespace cinemaServer.Data
                     MovieId = movie.Id,
                     TheaterId = theater.Id,
                     StartTime = new DateTime()
-                        .AddYears(_rng.Next(1999, 2025))
+                        .AddYears(_rng.Next(2005, 2025))
                         .AddDays(_rng.Next(0, 365))
                         .AddHours(_rng.Next(10, 25))
                         .ToUniversalTime()
@@ -119,9 +120,10 @@ namespace cinemaServer.Data
 
             // Identity Users
             //Admin
+            string adminGUID = PredefinedGuid.GetDefinedGUID(_rng);
             ApplicationUser admin = new ApplicationUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = adminGUID,
                 UserName = "adminuser",
                 NormalizedUserName = "ADMINUSER",
                 Email = "admin@cinema.com",
@@ -133,10 +135,11 @@ namespace cinemaServer.Data
 
             admin.PasswordHash = passwordHasher.HashPassword(admin, "adminpassword");
 
+            string userGUID = PredefinedGuid.GetDefinedGUID(_rng);
 
             ApplicationUser testUser = new ApplicationUser
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = userGUID,
                 UserName = "testuser",
                 NormalizedUserName = "TESTUSER",
                 Email = "test@user.com",
@@ -155,15 +158,21 @@ namespace cinemaServer.Data
 
         private void GenerateCustomers(int numberOfCustomers) 
         {
+            if (numberOfCustomers > 198) 
+            {
+                throw new ArgumentException("Cant generate more than 198 customers");
+            }
+
             PasswordHasher<ApplicationUser> passwordHasher = new PasswordHasher<ApplicationUser>();
             _customerList.AddRange(GeneratePredefinedUsers());
             numberOfCustomers -= _customerList.Count;
 
             for (int i = 1; i < numberOfCustomers; i++) 
             {
+                string customerGUID = PredefinedGuid.GetDefinedGUID(_rng);
                 ApplicationUser newUser = new ApplicationUser
                 {
-                    Id = Guid.NewGuid().ToString(),
+                    Id = customerGUID,
                     UserName = $"user{i}",
                     NormalizedUserName = $"user{i}".ToUpper(),
                     Email = $"user{i}@cinema.com",

@@ -37,6 +37,9 @@ namespace cinemaServer.Data
                 .HasMany(s => s.Tickets)
                 .WithOne(t => t.Screening)
                 .HasForeignKey(s => s.ScreeningId);
+            modelBuilder.Entity<Screening>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
 
             // THEATER
             modelBuilder.Entity<Theater>()
@@ -74,7 +77,7 @@ namespace cinemaServer.Data
             modelBuilder.Entity<Theater>().Navigation(t => t.Seats).AutoInclude();
 
             // Seed database
-            DatabaseSeeder seeder = new DatabaseSeeder(123456, 20, 5, 50, 100, 500);
+            DatabaseSeeder seeder = new DatabaseSeeder(123456, 20, 5, 50, 1000, 5000);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Theater>().HasData(seeder.Theaters);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
