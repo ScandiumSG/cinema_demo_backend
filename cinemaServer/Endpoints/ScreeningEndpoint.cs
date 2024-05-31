@@ -16,10 +16,10 @@ namespace cinemaServer.Endpoints
             var screeningGroup = app.MapGroup("screening");
 
             screeningGroup.MapGet("/", GetAll);
-            screeningGroup.MapGet("/{screeningId}-{movieId}", GetSpecific);
+            screeningGroup.MapGet("/{screeningId}/{movieId}", GetSpecific);
             screeningGroup.MapPost("/", PostScreening);
             screeningGroup.MapPut("/", PutScreening);
-            screeningGroup.MapDelete("/{screeningId}-{movieId}", DeleteScreening);
+            screeningGroup.MapDelete("/{screeningId}/{movieId}", DeleteScreening);
             screeningGroup.MapGet("/upcoming/{limitDate}", GetUpcomingScreenings);
             screeningGroup.MapGet("/upcoming/{movieId}/{limitDate}", GetUpcomingScreeningsOfMovie);
         }
