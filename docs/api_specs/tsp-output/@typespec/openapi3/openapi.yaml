@@ -260,7 +260,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/screeningModels.postScreening'
-  /screening/{screeningId}-{movieId}:
+  /screening/{screeningId}/{movieId}:
     get:
       tags:
         - Screening Endpoint

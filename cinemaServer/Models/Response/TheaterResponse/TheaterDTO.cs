@@ -1,7 +1,4 @@
-﻿using cinemaServer.Models.PureModels;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using cinemaServer.Models.Response.SeatResponse;
+﻿using cinemaServer.Models.Response.SeatResponse;
 
 namespace cinemaServer.Models.Response.TheaterResponse
 {
