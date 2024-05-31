@@ -56,7 +56,6 @@ builder.Services.AddDbContext<DataContext>
     );
 
 builder.Services.AddScoped<ICompUpcomingRepository<Screening>, ScreeningRepository>();
-builder.Services.AddScoped<IRepository<Ticket>, TicketRepository>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Theater>, Repository<Theater>>();
 builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();
@@ -127,7 +126,6 @@ app.ScreeningEndpointConfiguration();
 app.MovieEndpointConfiguration();
 app.TheaterEndpointConfiguration();
 app.UserEndpointConfiguration();
-app.TicketEndpointConfiguration();
 
 //Configure auth endpoint
 app.AuthenticationEndpointConfiguration();
