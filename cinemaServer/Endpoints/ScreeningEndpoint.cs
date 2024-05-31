@@ -178,9 +178,9 @@ namespace cinemaServer.Endpoints
                 return TypedResults.NoContent();
             }
 
-            IEnumerable<ScreeningResponseShortenedDTO> screeningsShortened = upcomingScreenings.Select((s) => ResponseConverter.ConvertShortenedScreening(s)).ToList();
+            IEnumerable<ScreeningResponseDTO> screeningsShortened = upcomingScreenings.Select((s) => ResponseConverter.ConvertScreening(s)).ToList();
 
-            Payload<IEnumerable<ScreeningResponseShortenedDTO>> payload = new Payload<IEnumerable<ScreeningResponseShortenedDTO>>(screeningsShortened);
+            Payload<IEnumerable<ScreeningResponseDTO>> payload = new Payload<IEnumerable<ScreeningResponseDTO>>(screeningsShortened);
 
             return TypedResults.Ok(payload);
         }
