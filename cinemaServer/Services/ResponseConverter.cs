@@ -18,6 +18,7 @@ namespace cinemaServer.Services
                 Id = screening.Id,
                 Movie = screening.Movie,
                 Theater = ConvertTheaterToDTO(screening.Theater),
+                TicketsSold = screening.Tickets.Count(),
                 Tickets = screening.Tickets.Select(ConvertTicketToScreeningDTO).ToList(),
                 StartTime = screening.StartTime,
             };
@@ -93,10 +94,6 @@ namespace cinemaServer.Services
             return new TicketInScreeningDTO()
             {
                 Id = ticket.Id,
-                ScreeningId = ticket.ScreeningId,
-                MovieId = ticket.MovieId,
-                TheaterId = ticket.TheaterId,
-                SeatId = ticket.SeatId,
                 Seat = ConvertSeatToTheaterAccompanyDTO(ticket.Seat!),
             };
         }

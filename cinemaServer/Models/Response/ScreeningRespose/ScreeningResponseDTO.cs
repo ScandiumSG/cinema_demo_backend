@@ -12,6 +12,8 @@ namespace cinemaServer.Models.Response.ScreeningRespose
 
         public TheaterDTO? Theater { get; set; }
 
+        public int TicketsSold { get; set; }
+
         public required ICollection<TicketInScreeningDTO> Tickets { get; set; }
 
         public DateTime StartTime { get; set; }
