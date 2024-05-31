@@ -3,6 +3,7 @@ using cinemaServer.Models.PureModels;
 using cinemaServer.Models.Response.ScreeningRespose;
 using cinemaServer.Models.Response.SeatResponse;
 using cinemaServer.Models.Response.TheaterResponse;
+using cinemaServer.Models.Response.TicketResponse;
 using cinemaServer.Models.Response.UserResponse;
 using cinemaServer.Models.User;
 
@@ -12,12 +13,12 @@ namespace cinemaServer.Services
     {
         public static ScreeningResponseDTO ConvertScreening(Screening screening) 
         {
-            return new ScreeningResponseDTO() 
+            return new ScreeningResponseDTO()
             {
                 Id = screening.Id,
                 Movie = screening.Movie,
                 Theater = ConvertTheaterToDTO(screening.Theater),
-                Tickets = screening.Tickets,
+                Tickets = screening.Tickets.Select(ConvertTicketToScreeningDTO).ToList(),
                 StartTime = screening.StartTime,
             };
         }
@@ -84,6 +85,19 @@ namespace cinemaServer.Services
                 Username = user.UserName,
                 Email = user.Email,
                 Role = user.Role,
+            };
+        }
+
+        public static TicketInScreeningDTO ConvertTicketToScreeningDTO(Ticket ticket) 
+        {
+            return new TicketInScreeningDTO()
+            {
+                Id = ticket.Id,
+                ScreeningId = ticket.ScreeningId,
+                MovieId = ticket.MovieId,
+                TheaterId = ticket.TheaterId,
+                SeatId = ticket.SeatId,
+                Seat = ConvertSeatToTheaterAccompanyDTO(ticket.Seat!),
             };
         }
     }

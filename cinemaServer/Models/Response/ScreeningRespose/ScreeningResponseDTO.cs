@@ -1,5 +1,6 @@
 ﻿using cinemaServer.Models.PureModels;
 using cinemaServer.Models.Response.TheaterResponse;
+using cinemaServer.Models.Response.TicketResponse;
 
 namespace cinemaServer.Models.Response.ScreeningRespose
 {
@@ -11,7 +12,7 @@ namespace cinemaServer.Models.Response.ScreeningRespose
 
         public TheaterDTO? Theater { get; set; }
 
-        public required ICollection<Ticket> Tickets { get; set; }
+        public required ICollection<TicketInScreeningDTO> Tickets { get; set; }
 
         public DateTime StartTime { get; set; }
     }
