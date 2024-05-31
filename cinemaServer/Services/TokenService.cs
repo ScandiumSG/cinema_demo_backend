@@ -48,14 +48,14 @@ namespace cinemaServer.Services
             );
         }
 
-        private IEnumerable<Claim> CreateClaims(ApplicationUser user)
+        private static List<Claim> CreateClaims(ApplicationUser user)
         {
             var claims = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.Role, user.Role.ToString())
-        };
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.Role, user.Role.ToString())
+            };
 
             return claims;
         }
