@@ -14,7 +14,7 @@ namespace cinemaServer.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // optionsBuilder.EnableSensitiveDataLogging();
+            //optionsBuilder.EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -70,6 +70,9 @@ namespace cinemaServer.Data
                 .HasOne(t => t.Seat)
                 .WithMany(s => s.Tickets)
                 .HasForeignKey(t => new { t.SeatId, t.TheaterId });
+            modelBuilder.Entity<Ticket>()
+                .Property(e => e.Id)
+                .ValueGeneratedOnAdd();
 
             // Auto include for queries
             modelBuilder.Entity<Screening>().Navigation(s => s.Movie).AutoInclude();
@@ -77,6 +80,8 @@ namespace cinemaServer.Data
             modelBuilder.Entity<Screening>().Navigation(s => s.Tickets).AutoInclude();
             modelBuilder.Entity<Theater>().Navigation(t => t.Seats).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(t => t.Seat).AutoInclude();
+            modelBuilder.Entity<Ticket>().Navigation(t => t.Customer).AutoInclude();
+            //modelBuilder.Entity<Ticket>().Navigation(t => t.Screening).AutoInclude();
             modelBuilder.Entity<ApplicationUser>().Navigation(u => u.Tickets).AutoInclude();
 
             // Seed database
@@ -86,6 +91,7 @@ namespace cinemaServer.Data
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
 
             modelBuilder.Entity<ApplicationUser>().HasData(seeder.Customers);
+
             modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
 
             modelBuilder.Entity<Seat>().HasData(seeder.Seats);

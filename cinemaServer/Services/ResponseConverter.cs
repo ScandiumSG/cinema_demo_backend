@@ -6,12 +6,13 @@ using cinemaServer.Models.Response.TheaterResponse;
 using cinemaServer.Models.Response.TicketResponse;
 using cinemaServer.Models.Response.UserResponse;
 using cinemaServer.Models.User;
+using System.Net.Sockets;
 
 namespace cinemaServer.Services
 {
     public static class ResponseConverter
     {
-        public static ScreeningResponseDTO ConvertScreening(Screening screening) 
+        public static ScreeningResponseDTO ConvertScreening(Screening screening)
         {
             return new ScreeningResponseDTO()
             {
@@ -24,7 +25,18 @@ namespace cinemaServer.Services
             };
         }
 
-        public static ScreeningResponseShortenedDTO ConvertShortenedScreening(Screening screening) 
+        public static ScreeningResponseForTicketDTO ConvertScreeningForTicket(Screening screening) 
+        {
+            return new ScreeningResponseForTicketDTO()
+            {
+                Id = screening.Id,
+                Movie = screening.Movie,
+                Theater = ConvertTheaterToShortenedDTO(screening.Theater!),
+                StartTime = screening.StartTime,
+            };
+        }
+
+        public static ScreeningResponseShortenedDTO ConvertShortenedScreening(Screening screening)
         {
             return new ScreeningResponseShortenedDTO()
             {
@@ -37,7 +49,7 @@ namespace cinemaServer.Services
         }
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-        public static TheaterDTO ConvertTheaterToDTO(Theater? theater) 
+        public static TheaterDTO ConvertTheaterToDTO(Theater? theater)
         {
             return new TheaterDTO()
             {
@@ -49,7 +61,7 @@ namespace cinemaServer.Services
         }
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-        public static SeatIncludedWithTheaterDTO ConvertSeatToTheaterAccompanyDTO(Seat seat) 
+        public static SeatIncludedWithTheaterDTO ConvertSeatToTheaterAccompanyDTO(Seat seat)
         {
             return new SeatIncludedWithTheaterDTO()
             {
@@ -59,7 +71,7 @@ namespace cinemaServer.Services
             };
         }
 
-        public static TheaterShortenedDTO ConvertTheaterToShortenedDTO(Theater theater) 
+        public static TheaterShortenedDTO ConvertTheaterToShortenedDTO(Theater theater)
         {
             return new TheaterShortenedDTO()
             {
@@ -69,7 +81,7 @@ namespace cinemaServer.Services
             };
         }
 
-        public static UserChangeDTO ConvertApplicationUserToDTO(ApplicationUser user) 
+        public static UserChangeDTO ConvertApplicationUserToDTO(ApplicationUser user)
         {
             return new UserChangeDTO()
             {
@@ -78,7 +90,7 @@ namespace cinemaServer.Services
             };
         }
 
-        public static AuthResponse ConvertApplicationUserToAuthResponse(ApplicationUser user) 
+        public static AuthResponse ConvertApplicationUserToAuthResponse(ApplicationUser user)
         {
             return new AuthResponse()
             {
@@ -89,12 +101,39 @@ namespace cinemaServer.Services
             };
         }
 
-        public static TicketInScreeningDTO ConvertTicketToScreeningDTO(Ticket ticket) 
+        public static TicketInScreeningDTO ConvertTicketToScreeningDTO(Ticket ticket)
         {
             return new TicketInScreeningDTO()
             {
                 Id = ticket.Id,
                 Seat = ConvertSeatToTheaterAccompanyDTO(ticket.Seat!),
+            };
+        }
+
+        public static List<TicketDTO> ConvertTicketToDTO(ICollection<Ticket> tickets) 
+        {
+            List<TicketDTO> dtoTickets = new List<TicketDTO>();
+            foreach (Ticket ticket in tickets)
+            {
+                TicketDTO newTicket = new TicketDTO()
+                {
+                    Id = ticket.Id,
+                    Screening = ConvertScreeningForTicket(ticket.Screening!),
+                    ScreeningId = ticket.ScreeningId,
+                    Customer = ConvertUserToTicketDTO(ticket.Customer!),
+                    Seat = ConvertSeatToTheaterAccompanyDTO(ticket.Seat!),
+                };
+                dtoTickets.Add(newTicket);
+            }
+            return dtoTickets;
+        }
+
+        public static UserOnTicketDTO ConvertUserToTicketDTO(ApplicationUser user) 
+        {
+            return new UserOnTicketDTO() 
+            {
+                Id = user.Id,
+                Email = user.Email!,
             };
         }
     }

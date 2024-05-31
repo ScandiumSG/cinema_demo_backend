@@ -7,7 +7,6 @@ using cinemaServer.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -58,6 +57,7 @@ builder.Services.AddDbContext<DataContext>
 builder.Services.AddScoped<ICompUpcomingRepository<Screening>, ScreeningRepository>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Theater>, Repository<Theater>>();
+builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
 builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();
 
 builder.Services.AddScoped<TokenService>();
@@ -126,6 +126,7 @@ app.ScreeningEndpointConfiguration();
 app.MovieEndpointConfiguration();
 app.TheaterEndpointConfiguration();
 app.UserEndpointConfiguration();
+app.TicketEndpointConfiguration();
 
 //Configure auth endpoint
 app.AuthenticationEndpointConfiguration();
