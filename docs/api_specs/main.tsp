@@ -117,7 +117,7 @@ namespace ScreeningEndpoint {
         @body error: errors.noContent;
     };
 
-    @route("/screening/{screeningId}-{movieId}")
+    @route("/screening/{screeningId}/{movieId}")
     @summary("Get")
     @doc("Get a specific screening, defined by both screeningId and movieId")
     @get op Get(
@@ -157,7 +157,7 @@ namespace ScreeningEndpoint {
         @body error: errors.badRequest;
     };
 
-    @route("/screening/{screeningId}-{movieId}")
+    @route("/screening/{screeningId}/{movieId}")
     @summary("Delete")
     @doc("Delete a screening")
     @delete op Delete(
