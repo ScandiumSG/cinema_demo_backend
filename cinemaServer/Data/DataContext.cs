@@ -74,7 +74,10 @@ namespace cinemaServer.Data
             // Auto include for queries
             modelBuilder.Entity<Screening>().Navigation(s => s.Movie).AutoInclude();
             modelBuilder.Entity<Screening>().Navigation(s => s.Theater).AutoInclude();
+            modelBuilder.Entity<Screening>().Navigation(s => s.Tickets).AutoInclude();
             modelBuilder.Entity<Theater>().Navigation(t => t.Seats).AutoInclude();
+            modelBuilder.Entity<Ticket>().Navigation(t => t.Seat).AutoInclude();
+            modelBuilder.Entity<ApplicationUser>().Navigation(u => u.Tickets).AutoInclude();
 
             // Seed database
             DatabaseSeeder seeder = new DatabaseSeeder(123456, 20, 5, 50, 1000, 5000);
