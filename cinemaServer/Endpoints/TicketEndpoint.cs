@@ -95,7 +95,7 @@ namespace cinemaServer.Endpoints
         public static async Task<IResult> GetTicketsForScreening(IRepository<Ticket> repo, int screeningId, int movieId) 
         {
             List<Ticket> tickets = await (repo as TicketRepository)!.GetTicketsForScreening(screeningId, movieId);
-            if (tickets.Count == 0) 
+            if (tickets.Count() == 0) 
             {
                 return TypedResults.NoContent();
             }
