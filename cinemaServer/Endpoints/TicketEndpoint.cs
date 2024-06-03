@@ -55,7 +55,7 @@ namespace cinemaServer.Endpoints
                 return TypedResults.NotFound("User id provided not found.");
             }
 
-            ICollection<Ticket> createdTickets = new List<Ticket>();
+            List<Ticket> queuedTickets = new List<Ticket>();
             foreach (int seatId in postTicket.SeatId) 
             { 
                 Seat? seat = associatedScreening.Theater!.Seats.Where((s) => s.Id == seatId).FirstOrDefault();
@@ -71,16 +71,16 @@ namespace cinemaServer.Endpoints
                     Seat = seat,
                     SeatId = seat!.Id,
                 };
-
-                Ticket? postedTicket = await repo.Create(constructedTicket);
-                if (postedTicket == null) 
-                {
-                    return TypedResults.BadRequest();
-                }
-                createdTickets.Add(postedTicket);
+                queuedTickets.Add(constructedTicket);
             }
 
-            List<TicketDTO> ticketOut = ResponseConverter.ConvertTicketToDTO(createdTickets);
+            Tuple<int, List<Ticket>> postedTicket = await repo.CreateMultiple(queuedTickets);
+            if (postedTicket.Item1 != queuedTickets.Count())
+            {
+                return TypedResults.BadRequest("Could not save tickets to database.");
+            }
+
+            List<TicketDTO> ticketOut = ResponseConverter.ConvertTicketToDTO(postedTicket.Item2);
             Payload<List<TicketDTO>> payload = new Payload<List<TicketDTO>>(ticketOut);
 
             return TypedResults.Ok(payload);
