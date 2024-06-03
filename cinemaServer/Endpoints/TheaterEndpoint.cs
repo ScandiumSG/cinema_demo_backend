@@ -58,15 +58,15 @@ namespace cinemaServer.Endpoints
                 Name = postObject.Name,
             };
 
-            Theater? savedTheater = await repo.Create(theaterObject);
+            Tuple<int, Theater> savedTheater = await repo.Create(theaterObject);
 
-            if (savedTheater == null) 
+            if (savedTheater.Item1 != 1) 
             {
                 return TypedResults.BadRequest();
             }
 
-            Payload<Theater> payload = new Payload<Theater>(savedTheater);
-            return TypedResults.Created($"/{savedTheater.Id}", payload);
+            Payload<Theater> payload = new Payload<Theater>(savedTheater.Item2);
+            return TypedResults.Created($"/{savedTheater.Item2.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]

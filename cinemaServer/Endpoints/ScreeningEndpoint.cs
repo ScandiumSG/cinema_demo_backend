@@ -81,16 +81,16 @@ namespace cinemaServer.Endpoints
                 StartTime = postObject.StartTime,
             };
 
-            Screening? savedScreening = await repo.Create(inputScreening);
-            if (savedScreening == null) 
+            Tuple<int, Screening> savedObjects = await repo.Create(inputScreening);
+            if (savedObjects.Item1 != 1) 
             {
                 return TypedResults.BadRequest();
             }
 
             Payload<ScreeningResponseDTO> payload = new Payload<ScreeningResponseDTO>(
-                ResponseConverter.ConvertScreening(savedScreening)
+                ResponseConverter.ConvertScreening(savedObjects.Item2)
             );
-            return TypedResults.Created($"/{savedScreening.Id}", payload);
+            return TypedResults.Created($"/{savedObjects.Item2.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
