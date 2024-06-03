@@ -12,8 +12,15 @@
         /// Attempt to save a entity to the database
         /// </summary>
         /// <param name="entity">The entity to add to the database</param>
-        /// <returns>The entity saved to the database</returns>
-        public Task<T?> Create(T entity);
+        /// <returns>The number of entities saved to the database</returns>
+        public Task<Tuple<int, T>> Create(T entity);
+
+        /// <summary>
+        /// Attempt to save multiple entities to the database
+        /// </summary>
+        /// <param name="entities">The entities to add to the database</param>
+        /// <returns>The number of entities saved to the database</returns>
+        public Task<Tuple<int, List<T>>> CreateMultiple(List<T> entities);
 
         /// <summary>
         /// Update the values of a specific entity

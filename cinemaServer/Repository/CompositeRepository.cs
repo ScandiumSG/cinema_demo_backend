@@ -15,11 +15,18 @@ namespace cinemaServer.Repository
             _dbSet = context.Set<T>();
         }
 
-        public async Task<T?> Create(T entity)
+        public async Task<Tuple<int, T>> Create(T entity)
         {
             _dbSet.Add(entity);
-            await _context.SaveChangesAsync();
-            return entity;
+            var savedEntities = await _context.SaveChangesAsync();
+            return new Tuple<int, T>(savedEntities, entity);
+        }
+
+        public async Task<Tuple<int, List<T>>> CreateMultiple(List<T> entities)
+        {
+            _dbSet.AddRange(entities);
+            var savedEntities = await _context.SaveChangesAsync();
+            return new Tuple<int, List<T>>(savedEntities, entities);
         }
 
         public async Task<T?> Delete(int id1, int id2)

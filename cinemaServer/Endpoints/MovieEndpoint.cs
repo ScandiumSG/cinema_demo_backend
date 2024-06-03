@@ -61,14 +61,14 @@ namespace cinemaServer.Endpoints
                 Rating = postObject.Rating
             };
 
-            Movie? savedMovie = await repo.Create(inputMovie);
-            if (savedMovie == null)
+            Tuple<int, Movie> savedMovie = await repo.Create(inputMovie);
+            if (savedMovie.Item1  != 1)
             {
                 return TypedResults.BadRequest();
             }
 
-            Payload<Movie> payload = new Payload<Movie>(savedMovie);
-            return TypedResults.Created($"/{savedMovie.Id}", payload);
+            Payload<Movie> payload = new Payload<Movie>(savedMovie.Item2);
+            return TypedResults.Created($"/{savedMovie.Item2.Id}", payload);
         }
 
         [ProducesResponseType(StatusCodes.Status201Created)]
