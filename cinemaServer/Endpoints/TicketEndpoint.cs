@@ -5,6 +5,7 @@ using cinemaServer.Models.Response.TicketResponse;
 using cinemaServer.Models.User;
 using cinemaServer.Repository;
 using cinemaServer.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace cinemaServer.Endpoints
 {
@@ -16,6 +17,7 @@ namespace cinemaServer.Endpoints
 
             //TicketGroup.MapGet("/", GetTickets);
             TicketGroup.MapGet("/{id}", GetSpecificTicket);
+            TicketGroup.MapGet("/refetch/{screeningId}/{movieId}", GetTicketsForScreening);
             TicketGroup.MapPost("/", CreateTicket);
             //TicketGroup.MapPut("/", UpdateTicket);
             //TicketGroup.MapDelete("/{id}", DeleteTicket);
@@ -41,6 +43,9 @@ namespace cinemaServer.Endpoints
             return TypedResults.Ok(payload);
         }
 
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public static async Task<IResult> CreateTicket(IRepository<Ticket> repo, ICompUpcomingRepository<Screening> screeningRepo, IRepository<ApplicationUser> userRepo, PostTicketDTO postTicket) 
         {
             Screening? associatedScreening = await screeningRepo.GetSpecific(postTicket.ScreeningId, postTicket.MovieId);
@@ -85,5 +90,21 @@ namespace cinemaServer.Endpoints
 
             return TypedResults.Ok(payload);
         }
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public static async Task<IResult> GetTicketsForScreening(IRepository<Ticket> repo, int screeningId, int movieId) 
+        {
+            List<Ticket> tickets = await (repo as TicketRepository)!.GetTicketsForScreening(screeningId, movieId);
+            if (tickets.Count == 0) 
+            {
+                return TypedResults.NoContent();
+            }
+
+            List<TicketInScreeningDTO> convertedTickets = tickets.Select((ticket) => ResponseConverter.ConvertTicketToScreeningDTO(ticket)).ToList();
+            Payload<List<TicketInScreeningDTO>> payload = new Payload<List<TicketInScreeningDTO>>(convertedTickets);
+
+            return TypedResults.Ok(payload);
+        }
+
     }
 }

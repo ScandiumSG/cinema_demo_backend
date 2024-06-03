@@ -57,7 +57,7 @@ builder.Services.AddDbContext<DataContext>
 builder.Services.AddScoped<ICompUpcomingRepository<Screening>, ScreeningRepository>();
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Theater>, Repository<Theater>>();
-builder.Services.AddScoped<IRepository<Ticket>, Repository<Ticket>>();
+builder.Services.AddScoped<IRepository<Ticket>, TicketRepository>();
 builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();
 
 builder.Services.AddScoped<TokenService>();
