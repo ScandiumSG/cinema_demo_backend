@@ -78,7 +78,8 @@ namespace cinemaServer.Repository
         public async Task<IEnumerable<Screening>> GetSpecificUpcoming(int specificObjectId, int limit, DateTime timeCutoff)
         {
             return await _dbSet
-                    .Where((e) => e.StartTime > timeCutoff && e.MovieId  == specificObjectId)
+                    .Where((e) => e.StartTime > timeCutoff)
+                    .Where((e) => e.MovieId == specificObjectId)
                     .OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();
