@@ -70,7 +70,7 @@ namespace cinemaServer.Repository
         {
             return await _dbSet
                     .Where((e) => e.StartTime.CompareTo(timeCutoff) > 0)
-                    .OrderBy((e) => e.StartTime.Ticks)
+                    .OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();
         }
@@ -80,7 +80,7 @@ namespace cinemaServer.Repository
             return await _dbSet
                     .Where((e) => e.StartTime.CompareTo(timeCutoff) > 0)
                     .Where((e) => e.MovieId.Equals(specificObjectId))
-                    .OrderBy((e) => e.StartTime.Ticks)
+                    .OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();
         }
