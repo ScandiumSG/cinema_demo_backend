@@ -56,6 +56,7 @@ namespace cinemaServer.Data
                 .HasMany(t => t.Seats)
                 .WithOne(s => s.Theater)
                 .HasForeignKey(t => t.TheaterId);
+
             // SEATS
             modelBuilder.Entity<Seat>().HasKey(s => new { s.Id, s.TheaterId });
             modelBuilder.Entity<Seat>()
@@ -87,10 +88,10 @@ namespace cinemaServer.Data
             // Auto include for queries
             modelBuilder.Entity<Screening>().Navigation(s => s.Movie).AutoInclude();
             modelBuilder.Entity<Screening>().Navigation(s => s.Theater).AutoInclude();
-            modelBuilder.Entity<Screening>().Navigation(s => s.Tickets).AutoInclude();
-            modelBuilder.Entity<Theater>().Navigation(t => t.Seats).AutoInclude();
+            //modelBuilder.Entity<Screening>().Navigation(s => s.Tickets).AutoInclude();
+            //modelBuilder.Entity<Theater>().Navigation(t => t.Seats).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(t => t.Seat).AutoInclude();
-            modelBuilder.Entity<Ticket>().Navigation(t => t.Customer).AutoInclude();
+            //modelBuilder.Entity<Ticket>().Navigation(t => t.Customer).AutoInclude();
             //modelBuilder.Entity<Ticket>().Navigation(t => t.Screening).AutoInclude();
             modelBuilder.Entity<ApplicationUser>().Navigation(u => u.Tickets).AutoInclude();
 
