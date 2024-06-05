@@ -70,7 +70,7 @@ namespace cinemaServer.Repository
         {
             return await _dbSet
                     .Where((e) => e.StartTime.CompareTo(timeCutoff) > 0)
-                    //.OrderBy((e) => e.StartTime)
+                    .OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();
         }
@@ -78,9 +78,8 @@ namespace cinemaServer.Repository
         public async Task<IEnumerable<Screening>> GetSpecificUpcoming(int specificObjectId, int limit, DateTime timeCutoff)
         {
             return await _dbSet
-                    .Where((e) => e.StartTime.CompareTo(timeCutoff) > 0)
-                    .Where((e) => e.MovieId.Equals(specificObjectId))
-                    //.OrderBy((e) => e.StartTime)
+                    .Where((e) => e.StartTime.CompareTo(timeCutoff) > 0 && e.MovieId.Equals(specificObjectId))
+                    .OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();
         }
