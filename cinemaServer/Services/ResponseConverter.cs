@@ -6,7 +6,6 @@ using cinemaServer.Models.Response.TheaterResponse;
 using cinemaServer.Models.Response.TicketResponse;
 using cinemaServer.Models.Response.UserResponse;
 using cinemaServer.Models.User;
-using System.Net.Sockets;
 
 namespace cinemaServer.Services
 {
@@ -18,7 +17,7 @@ namespace cinemaServer.Services
             {
                 Id = screening.Id,
                 Movie = screening.Movie,
-                Theater = ConvertTheaterToDTO(screening.Theater),
+                Theater = ConvertTheaterToShortenedDTO(screening.Theater!),
                 TicketsSold = screening.Tickets.Count(),
                 Tickets = screening.Tickets.Select(ConvertTicketToScreeningDTO).ToList(),
                 StartTime = screening.StartTime,
