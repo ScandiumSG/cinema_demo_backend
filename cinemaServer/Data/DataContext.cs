@@ -88,7 +88,7 @@ namespace cinemaServer.Data
             // Auto include for queries
             modelBuilder.Entity<Screening>().Navigation(s => s.Movie).AutoInclude();
             modelBuilder.Entity<Screening>().Navigation(s => s.Theater).AutoInclude();
-            //modelBuilder.Entity<Screening>().Navigation(s => s.Tickets).AutoInclude();
+            modelBuilder.Entity<Screening>().Navigation(s => s.Tickets).AutoInclude();
             //modelBuilder.Entity<Theater>().Navigation(t => t.Seats).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(t => t.Seat).AutoInclude();
             //modelBuilder.Entity<Ticket>().Navigation(t => t.Customer).AutoInclude();
