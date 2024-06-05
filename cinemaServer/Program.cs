@@ -58,6 +58,7 @@ builder.Services.AddScoped<ICompUpcomingRepository<Screening>, ScreeningReposito
 builder.Services.AddScoped<IRepository<Movie>, Repository<Movie>>();
 builder.Services.AddScoped<IRepository<Theater>, Repository<Theater>>();
 builder.Services.AddScoped<IRepository<Ticket>, TicketRepository>();
+builder.Services.AddScoped<IRepository<Seat>, SeatRepository>();
 builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();
 
 builder.Services.AddScoped<TokenService>();
