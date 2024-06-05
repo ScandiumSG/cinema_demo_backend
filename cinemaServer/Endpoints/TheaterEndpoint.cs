@@ -2,7 +2,9 @@
 using cinemaServer.Models.Request.Post;
 using cinemaServer.Models.Request.Put;
 using cinemaServer.Models.Response.Payload;
+using cinemaServer.Models.Response.SeatResponse;
 using cinemaServer.Repository;
+using cinemaServer.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cinemaServer.Endpoints
@@ -18,6 +20,7 @@ namespace cinemaServer.Endpoints
             theaterGroup.MapPost("/", Create);
             theaterGroup.MapPut("/", Update);
             theaterGroup.MapDelete("/", Delete);
+            theaterGroup.MapGet("/seats/{id}", GetSeatsForTheater);
         }
 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -106,6 +109,23 @@ namespace cinemaServer.Endpoints
             }
 
             Payload<Theater> payload = new Payload<Theater>(deleteTheater);
+            return TypedResults.Ok(payload);
+        }
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public static async Task<IResult> GetSeatsForTheater(IRepository<Seat> seatRepo, int id) 
+        {
+            IEnumerable<Seat> seats = await (seatRepo as SeatRepository)!.GetSeatsForTheater(id);
+
+            if (seats.Count() == 0) 
+            {
+                return TypedResults.NotFound();
+            }
+
+            IEnumerable<SeatIncludedWithTheaterDTO> seatsDTO = seats.Select((s) => ResponseConverter.ConvertSeatToTheaterAccompanyDTO(s));
+            Payload<IEnumerable<SeatIncludedWithTheaterDTO>> payload = new Payload<IEnumerable<SeatIncludedWithTheaterDTO>>(seatsDTO);
+
             return TypedResults.Ok(payload);
         }
     }
