@@ -20,6 +20,12 @@ namespace cinemaServer.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Define relationships
+
+            // MOVIE
+            modelBuilder.Entity<Movie>()
+                .HasIndex(m => m.Id)
+                .HasDatabaseName("IX_movieId");
+
             // SCREENING
             // Define composite key for screening
             modelBuilder.Entity<Screening>().HasKey(s => new { s.Id, s.MovieId });
