@@ -46,7 +46,7 @@ namespace cinemaServer.Endpoints
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> CreateTicket(IRepository<Ticket> repo, ICompUpcomingRepository<Screening> screeningRepo, IRepository<ApplicationUser> userRepo, PostTicketDTO postTicket) 
+        public static async Task<IResult> CreateTicket(IRepository<Ticket> repo, ICompUpcomingRepository<Screening> screeningRepo, IRepository<Seat> seatRepo, IRepository<ApplicationUser> userRepo, PostTicketDTO postTicket) 
         {
             Screening? associatedScreening = await screeningRepo.GetSpecific(postTicket.ScreeningId, postTicket.MovieId);
             if (associatedScreening == null) 
@@ -60,10 +60,12 @@ namespace cinemaServer.Endpoints
                 return TypedResults.NotFound("User id provided not found.");
             }
 
+            IEnumerable<Seat> seatForTheater = await (seatRepo as SeatRepository)!.GetSeatsForTheater(associatedScreening.TheaterId);
+
             List<Ticket> queuedTickets = new List<Ticket>();
             foreach (int seatId in postTicket.SeatId) 
-            { 
-                Seat? seat = associatedScreening.Theater!.Seats.Where((s) => s.Id == seatId).FirstOrDefault();
+            {
+                Seat? seat = seatForTheater.Where((s) => s.Id == seatId).FirstOrDefault();
 
                 Ticket constructedTicket = new Ticket()
                 {
