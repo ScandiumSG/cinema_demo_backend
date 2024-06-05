@@ -40,6 +40,10 @@ namespace cinemaServer.Data
             modelBuilder.Entity<Screening>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
+            // Define index
+            modelBuilder.Entity<Screening>()
+                .HasIndex(s => new { s.MovieId, s.StartTime })
+                .HasDatabaseName("IX_Screening_StartTime_MovieId");
 
             // THEATER
             modelBuilder.Entity<Theater>()
