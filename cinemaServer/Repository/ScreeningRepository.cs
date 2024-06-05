@@ -77,21 +77,12 @@ namespace cinemaServer.Repository
 
         public async Task<IEnumerable<Screening>> GetSpecificUpcoming(int specificObjectId, int limit, DateTime timeCutoff)
         {
-            var screenings = await _dbSet.ToListAsync();
-            IEnumerable<Screening> upcomingScreenings = screenings.Where((e) => e.StartTime.CompareTo(timeCutoff) > 0);
-
-            IEnumerable<Screening> upcomingSpecificScreenings = upcomingScreenings.Where((e) => e.MovieId.Equals(specificObjectId));
-
-            return upcomingSpecificScreenings.Take(limit).ToList();
-
-            /*
             return await _dbSet
                     .Where((e) => e.StartTime.CompareTo(timeCutoff) > 0)
                     .Where((e) => e.MovieId.Equals(specificObjectId))
                     //.OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();
-            */
         }
     }
 }
