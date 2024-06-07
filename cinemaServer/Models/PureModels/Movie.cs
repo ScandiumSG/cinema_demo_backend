@@ -36,5 +36,8 @@ namespace cinemaServer.Models.PureModels
         [Column("rating")]
         [JsonPropertyName("rating")]
         public ERatings? Rating { get; set; } = 0;
+
+        [Column("review_rating")]
+        public double AverageRating { get; set; }
     }
 }
