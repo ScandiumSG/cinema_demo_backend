@@ -28,9 +28,9 @@ namespace cinemaServer.Data
             _ticketList = new List<Ticket>();
             _seatsList = new List<Seat>();
 
+            GenerateCustomers(numberOfCustomers);
             GenerateMovies(numberOfMovies);
             GenerateTheaters(numberOfTheaters);
-            GenerateCustomers(numberOfCustomers);
             GenerateScreenings(numberOfScreenings);
             GenerateTickets(numberOfTickets); 
 
@@ -44,11 +44,12 @@ namespace cinemaServer.Data
                 Movie newMovie = new Movie()
                 {
                     Id = i,
-                    Title = "Some Title",
-                    Description = "A description",
+                    Title = $"Movie Title {i}",
+                    Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean elit arcu, auctor et suscipit sed, posuere id sapien. Etiam tincidunt lorem dictum pretium faucibus. Quisque vel accumsan ligula, et cursus ligula. Morbi mattis mauris vel rhoncus finibus. Nullam aliquet tempus nunc, ut elementum augue ultrices at. Vestibulum tincidunt, erat sit amet tempus eleifend, eros lorem volutpat risus, a varius mauris lectus id quam. Donec pharetra nibh id eleifend tincidunt. Praesent non ipsum bibendum, convallis sem at, lacinia odio. Vivamus ultrices rhoncus magna et vestibulum. Donec eleifend ipsum lectus, at accumsan erat elementum vel. Mauris dui quam, feugiat id euismod vitae, ultrices at nisl. Sed rhoncus eros et orci fringilla, ac porta nisl venenatis. ",
                     Runtime = _rng.Next(45, 390),
-                    Year = _rng.Next(1950, DateTime.Now.Year + 1),
-                    Rating = (ERatings?)ratingValues.GetValue(_rng.Next(ratingValues.Length))
+                    Year = _rng.Next(1990, DateTime.Now.Year + 1),
+                    Rating = (ERatings?)ratingValues.GetValue(_rng.Next(ratingValues.Length)),
+                    AverageRating = Math.Round(_rng.NextDouble() * _rng.Next(1,5), 1)
                 };
                 _movieList.Add(newMovie);
             }
