@@ -3,6 +3,7 @@ using cinemaServer.Models.Request.Post;
 using cinemaServer.Models.Request.Put;
 using cinemaServer.Models.Response.Payload;
 using cinemaServer.Models.Response.SeatResponse;
+using cinemaServer.Models.Response.TheaterResponse;
 using cinemaServer.Repository;
 using cinemaServer.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -25,15 +26,15 @@ namespace cinemaServer.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public static async Task<IResult> Get(IRepository<Theater> repo, int limit = 20) 
+        public static async Task<IResult> Get(IRepository<Theater> repo) 
         {
-            List<Theater>? theaters = await repo.Get(limit);
+            List<Theater>? theaters = await repo.Get(null);
             if (theaters.Count == 0) 
             {
                 return TypedResults.NoContent();
             }
-
-            Payload<List<Theater>> payload = new Payload<List<Theater>>(theaters);
+            List<TheaterShortenedDTO> convertedTheaters = theaters.Select(t => ResponseConverter.ConvertTheaterToShortenedDTO(t)).ToList();
+            Payload<List<TheaterShortenedDTO>> payload = new Payload<List<TheaterShortenedDTO>>(convertedTheaters);
             return TypedResults.Ok(payload);
         }
 
