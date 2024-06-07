@@ -66,8 +66,8 @@
 
     public interface ICompUpcomingRepository<T> : ICompRepository<T> where T : class
     {
-        public Task<IEnumerable<T>> GetUpcoming(int limit, DateTime timeCutoff);
+        public Task<IEnumerable<T>> GetUpcoming(int limit, DateTime timeCutoff, int? locationSpecifier);
 
-        public Task<IEnumerable<T>> GetSpecificUpcoming(int objectSpecifier, int limit, DateTime timeCutoff);
+        public Task<IEnumerable<T>> GetSpecificUpcoming(int objectSpecifier, int limit, DateTime timeCutoff, int? locationSpecifier);
     }
 }
