@@ -29,8 +29,8 @@ namespace cinemaServer.Data
             _seatsList = new List<Seat>();
 
             GenerateCustomers(numberOfCustomers);
-            GenerateMovies(numberOfMovies);
             GenerateTheaters(numberOfTheaters);
+            GenerateMovies(numberOfMovies);
             GenerateScreenings(numberOfScreenings);
             GenerateTickets(numberOfTickets); 
 
@@ -49,7 +49,7 @@ namespace cinemaServer.Data
                     Runtime = _rng.Next(45, 390),
                     Year = _rng.Next(1990, DateTime.Now.Year + 1),
                     Rating = (ERatings?)ratingValues.GetValue(_rng.Next(ratingValues.Length)),
-                    AverageRating = Math.Round(_rng.NextDouble() * _rng.Next(1,5), 1)
+                    AverageRating = 5 - Math.Round(_rng.NextDouble() * _rng.Next(1,5), 1)
                 };
                 _movieList.Add(newMovie);
             }
@@ -106,9 +106,9 @@ namespace cinemaServer.Data
                     MovieId = movie.Id,
                     TheaterId = theater.Id,
                     StartTime = new DateTime()
-                        .AddYears(_rng.Next(2005, 2025))
+                        .AddYears(_rng.Next(2015, 2025))
                         .AddDays(_rng.Next(0, 365))
-                        .AddHours(_rng.Next(10, 25))
+                        .AddHours(_rng.Next(10, 24))
                         .ToUniversalTime()
                 };
                 _screeningList.Add(newScreening);

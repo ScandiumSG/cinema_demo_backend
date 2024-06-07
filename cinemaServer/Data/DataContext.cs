@@ -96,7 +96,7 @@ namespace cinemaServer.Data
             modelBuilder.Entity<ApplicationUser>().Navigation(u => u.Tickets).AutoInclude();
 
             // Seed database
-            DatabaseSeeder seeder = new DatabaseSeeder(123456, 20, 5, 50, 1000, 5000);
+            DatabaseSeeder seeder = new DatabaseSeeder(123456, 20, 5, 50, 3000, 5000);
             modelBuilder.Entity<ApplicationUser>().HasData(seeder.Customers);
             modelBuilder.Entity<Movie>().HasData(seeder.Movies);
             modelBuilder.Entity<Theater>().HasData(seeder.Theaters);
