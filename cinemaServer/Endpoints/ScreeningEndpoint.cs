@@ -150,14 +150,12 @@ namespace cinemaServer.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public static async Task<IResult> GetUpcomingScreenings(ICompUpcomingRepository<Screening> repo, DateTime? date, int? theaterFilter, int limit = 10)
+        public static async Task<IResult> GetUpcomingScreenings(ICompUpcomingRepository<Screening> repo, DateTime? date, string theaterFilter = "", int limit = 50)
         {
-            DateTime limitDate = new DateTime();
-            if (date != null)
-            {
-                limitDate = (DateTime)date;
-            }
-            IEnumerable<Screening> upcomingScreenings = await repo.GetUpcoming(limit, limitDate, theaterFilter);
+            DateTime limitDate = date ?? new DateTime();
+            List<int> theaterFilterList = QueryParseService.ParseTheaterFilterList(theaterFilter);
+
+            IEnumerable<Screening> upcomingScreenings = await repo.GetUpcoming(limit, limitDate, theaterFilterList);
 
             if (!upcomingScreenings.Any()) 
             {
@@ -173,14 +171,12 @@ namespace cinemaServer.Endpoints
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public static async Task<IResult> GetUpcomingScreeningsOfMovie(ICompUpcomingRepository<Screening> repo, int movieId, DateTime? date, int? theaterFilter, int limit = 10)
+        public static async Task<IResult> GetUpcomingScreeningsOfMovie(ICompUpcomingRepository<Screening> repo, int movieId, DateTime? date, string theaterFilter = "", int limit = 20)
         {
-            DateTime limitDate = new DateTime();
-            if (date != null) 
-            {
-                limitDate = (DateTime) date;
-            } 
-            IEnumerable<Screening> upcomingScreenings = await repo.GetSpecificUpcoming(movieId, limit, limitDate, theaterFilter);
+            DateTime limitDate = date ?? new DateTime();
+            List<int> theaterFilterList = QueryParseService.ParseTheaterFilterList(theaterFilter);
+
+            IEnumerable<Screening> upcomingScreenings = await repo.GetSpecificUpcoming(movieId, limit, limitDate, theaterFilterList);
 
 
             if (!upcomingScreenings.Any())

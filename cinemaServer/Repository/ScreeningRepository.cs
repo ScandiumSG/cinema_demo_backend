@@ -66,12 +66,14 @@ namespace cinemaServer.Repository
             return entity;
         }
 
-        public async Task<IEnumerable<Screening>> GetUpcoming(int limit, DateTime timeCutoff, int? locationSpecifier)
+        public async Task<IEnumerable<Screening>> GetUpcoming(int limit, DateTime timeCutoff, List<int> locationSpecifier)
         {
-            if (locationSpecifier != null)
+            if (locationSpecifier.Count != 0)
             {
                 return await _dbSet
-                    .Where((e) => e.StartTime.CompareTo(timeCutoff) > 0 && e.Theater!.Id == locationSpecifier)
+                    .Where((e) => 
+                        e.StartTime.CompareTo(timeCutoff) > 0 && 
+                        locationSpecifier.Contains(e.Theater!.Id))
                     .OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();
@@ -83,12 +85,15 @@ namespace cinemaServer.Repository
                     .ToListAsync();
         }
 
-        public async Task<IEnumerable<Screening>> GetSpecificUpcoming(int specificObjectId, int limit, DateTime timeCutoff, int? locationSpecifier)
+        public async Task<IEnumerable<Screening>> GetSpecificUpcoming(int specificObjectId, int limit, DateTime timeCutoff, List<int> locationSpecifier)
         {
-            if (locationSpecifier != null)
+            if (locationSpecifier.Count != 0)
             {
                 return await _dbSet
-                    .Where((e) => e.StartTime.CompareTo(timeCutoff) > 0 && e.MovieId.Equals(specificObjectId) && e.Theater!.Id == locationSpecifier)
+                    .Where((e) => 
+                        e.StartTime.CompareTo(timeCutoff) > 0 && 
+                        e.MovieId.Equals(specificObjectId) && 
+                        locationSpecifier.Contains(e.Theater!.Id))
                     .OrderBy((e) => e.StartTime)
                     .Take(limit)
                     .ToListAsync();

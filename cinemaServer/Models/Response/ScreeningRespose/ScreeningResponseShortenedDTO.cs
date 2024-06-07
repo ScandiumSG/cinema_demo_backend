@@ -9,7 +9,7 @@ namespace cinemaServer.Models.Response.ScreeningRespose
 
         public Movie? Movie { get; set; }
 
-        public TheaterDTO? Theater { get; set; }
+        public TheaterShortenedDTO? Theater { get; set; }
 
         public int TicketsSold { get; set; }
 
