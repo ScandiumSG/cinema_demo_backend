@@ -117,7 +117,7 @@ namespace cinemaServer.Services
                 TicketDTO newTicket = new TicketDTO()
                 {
                     Id = ticket.Id,
-                    Screening = ConvertScreeningForTicket(ticket.Screening!),
+                    Screening = ConvertScreeningForTicket(ticket.Screening!) ?? null,
                     ScreeningId = ticket.ScreeningId,
                     Customer = ConvertUserToTicketDTO(ticket.Customer!),
                     Seat = ConvertSeatToTheaterAccompanyDTO(ticket.Seat!),
@@ -127,8 +127,12 @@ namespace cinemaServer.Services
             return dtoTickets;
         }
 
-        public static UserOnTicketDTO ConvertUserToTicketDTO(ApplicationUser user) 
+        public static UserOnTicketDTO? ConvertUserToTicketDTO(ApplicationUser user) 
         {
+            if (user == null) 
+            {
+                return null;
+            }
             return new UserOnTicketDTO() 
             {
                 Id = user.Id,
