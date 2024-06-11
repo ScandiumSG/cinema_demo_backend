@@ -79,5 +79,13 @@ namespace cinemaServer.Repository
             await _context.SaveChangesAsync();
             return foundEntity;
         }
+
+        public async Task<List<Ticket>> GetTicketsForUser(string userId) 
+        {
+            List<Ticket> tickets = await _dbSet.Where((t) => t.CustomerId == userId)
+                .Include(t => t.Screening)
+                .ToListAsync();
+            return tickets;
+        }
     }
 }

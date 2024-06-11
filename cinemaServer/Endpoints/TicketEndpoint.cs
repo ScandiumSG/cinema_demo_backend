@@ -5,6 +5,8 @@ using cinemaServer.Models.Response.TicketResponse;
 using cinemaServer.Models.User;
 using cinemaServer.Repository;
 using cinemaServer.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace cinemaServer.Endpoints
@@ -21,6 +23,7 @@ namespace cinemaServer.Endpoints
             TicketGroup.MapPost("/", CreateTicket);
             //TicketGroup.MapPut("/", UpdateTicket);
             //TicketGroup.MapDelete("/{id}", DeleteTicket);
+            TicketGroup.MapGet("/purchased", GetPurchasedTickets);
         }
 
         public static async Task<IResult> GetTickets(IRepository<Ticket> repo) 
@@ -92,6 +95,7 @@ namespace cinemaServer.Endpoints
 
             return TypedResults.Ok(payload);
         }
+
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public static async Task<IResult> GetTicketsForScreening(IRepository<Ticket> repo, int screeningId, int movieId) 
@@ -104,6 +108,36 @@ namespace cinemaServer.Endpoints
 
             List<TicketInScreeningDTO> convertedTickets = tickets.Select((ticket) => ResponseConverter.ConvertTicketToScreeningDTO(ticket)).ToList();
             Payload<List<TicketInScreeningDTO>> payload = new Payload<List<TicketInScreeningDTO>>(convertedTickets);
+
+            return TypedResults.Ok(payload);
+        }
+
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public static async Task<IResult> GetPurchasedTickets(IRepository<Ticket> repo, HttpContext httpContext, bool showPrevious = false) 
+        {
+            DateTime currentTime = DateTime.Now;
+            var claimedUser = httpContext.User;
+            if (!(claimedUser.Identity != null && claimedUser.Identity.IsAuthenticated)) 
+            {
+                return TypedResults.Unauthorized();
+            }
+
+            string? userId = claimedUser.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+            if (userId == null) 
+            {
+                return TypedResults.NotFound();
+            }
+
+            List<Ticket> dbTickets = await (repo as TicketRepository)!.GetTicketsForUser(userId);
+
+            if (showPrevious) 
+            {
+                dbTickets = dbTickets.Where((t) => t.Screening?.StartTime.CompareTo(currentTime) > 0).ToList();
+            }
+
+            List<TicketDTO> convertedTickets = ResponseConverter.ConvertTicketToDTO(dbTickets);
+            Payload<List<TicketDTO>> payload = new Payload<List<TicketDTO>>(convertedTickets);
 
             return TypedResults.Ok(payload);
         }
