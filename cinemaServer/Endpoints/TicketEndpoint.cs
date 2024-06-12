@@ -131,7 +131,7 @@ namespace cinemaServer.Endpoints
 
             List<Ticket> dbTickets = await (repo as TicketRepository)!.GetTicketsForUser(userId);
 
-            if (showPrevious) 
+            if (!showPrevious) 
             {
                 dbTickets = dbTickets.Where((t) => t.Screening?.StartTime.CompareTo(currentTime) > 0).ToList();
             }
