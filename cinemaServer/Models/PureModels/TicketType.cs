@@ -8,7 +8,7 @@ namespace cinemaServer.Models.PureModels
     public class TicketType
     {
         [Key]
-        [Column("ticket_type_id")]
+        [Column("id")]
         [JsonPropertyName("id")]
         public int Id { get; set; }
 
