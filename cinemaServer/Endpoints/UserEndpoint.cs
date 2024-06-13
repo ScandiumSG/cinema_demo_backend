@@ -13,7 +13,7 @@ namespace cinemaServer.Endpoints
     {
         public static void UserEndpointConfiguration(this WebApplication app)
         {
-            var userGroup = app.MapGroup("/user");
+            var userGroup = app.MapGroup("user");
 
             userGroup.MapPut("/change", UpdateUserInfo);
             userGroup.MapPut("/changepw", UpdateUserPassword);
