@@ -9,5 +9,7 @@
         public required string CustomerId { get; set; }
 
         public ICollection<int> SeatId { get; set; }
+
+        public ICollection<int> TicketTypeId { get; set; }
     }
 }

@@ -32,12 +32,9 @@ namespace cinemaServer.Models.PureModels
 
         public Seat? Seat { get; set; }
 
-        /*
-        [Column("seat")]
-        public int SeatNumber { get; set; }
+        [Column("ticket_type_id")]
+        public int TicketTypeId { get; set; } = 1;
 
-        [Column("row")]
-        public int Row {  get; set; }
-        */
+        public TicketType? TicketType { get; set; }
     }
 }

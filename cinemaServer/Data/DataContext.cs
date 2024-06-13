@@ -67,6 +67,12 @@ namespace cinemaServer.Data
                 .HasMany(s => s.Tickets)
                 .WithOne(t => t.Seat);
 
+            // TICKETTYPE
+            modelBuilder.Entity<TicketType>().HasKey(t => t.Id);
+            modelBuilder.Entity<TicketType>()
+                .Property(t => t.Id)
+                .ValueGeneratedOnAdd();
+
             // TICKET
             modelBuilder.Entity<Ticket>().HasKey(t => t.Id);
             modelBuilder.Entity<Ticket>()
@@ -82,6 +88,11 @@ namespace cinemaServer.Data
                 .WithMany(s => s.Tickets)
                 .HasForeignKey(t => new { t.SeatId, t.TheaterId });
             modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.TicketType);
+            modelBuilder.Entity<Ticket>()
+                .Property(e => e.TicketTypeId)
+                .HasDefaultValue(1);
+            modelBuilder.Entity<Ticket>()
                 .Property(e => e.Id)
                 .ValueGeneratedOnAdd();
 
@@ -91,6 +102,7 @@ namespace cinemaServer.Data
             modelBuilder.Entity<Screening>().Navigation(s => s.Tickets).AutoInclude();
             //modelBuilder.Entity<Theater>().Navigation(t => t.Seats).AutoInclude();
             modelBuilder.Entity<Ticket>().Navigation(t => t.Seat).AutoInclude();
+            modelBuilder.Entity<Ticket>().Navigation(t => t.TicketType).AutoInclude();
             //modelBuilder.Entity<Ticket>().Navigation(t => t.Customer).AutoInclude();
             //modelBuilder.Entity<Ticket>().Navigation(t => t.Screening).AutoInclude();
             modelBuilder.Entity<ApplicationUser>().Navigation(u => u.Tickets).AutoInclude();
@@ -102,7 +114,7 @@ namespace cinemaServer.Data
             modelBuilder.Entity<Theater>().HasData(seeder.Theaters);
             modelBuilder.Entity<Screening>().HasData(seeder.Screenings);
 
-
+            modelBuilder.Entity<TicketType>().HasData(seeder.TicketTypes);
             modelBuilder.Entity<Ticket>().HasData(seeder.Tickets);
 
             modelBuilder.Entity<Seat>().HasData(seeder.Seats);
@@ -111,6 +123,7 @@ namespace cinemaServer.Data
         public DbSet<Screening> Screenings { get; set; }
         public DbSet<Theater> Theaters { get; set; }
         public DbSet<Movie> Movies { get; set; }
+        public DbSet<TicketType> TicketTypes { get; set; }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<ApplicationUser> Users { get; set; }
     }

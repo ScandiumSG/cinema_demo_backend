@@ -1,4 +1,5 @@
-﻿using cinemaServer.Models.Response.SeatResponse;
+﻿using cinemaServer.Models.PureModels;
+using cinemaServer.Models.Response.SeatResponse;
 
 namespace cinemaServer.Models.Response.TicketResponse
 {
@@ -8,5 +9,6 @@ namespace cinemaServer.Models.Response.TicketResponse
 
         public required SeatIncludedWithTheaterDTO Seat {  get; set; }
 
+        public TicketType TicketType { get; set; }
     }
 }

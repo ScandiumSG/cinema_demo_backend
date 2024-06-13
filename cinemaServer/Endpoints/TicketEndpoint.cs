@@ -24,6 +24,7 @@ namespace cinemaServer.Endpoints
             //TicketGroup.MapPut("/", UpdateTicket);
             //TicketGroup.MapDelete("/{id}", DeleteTicket);
             TicketGroup.MapGet("/purchased", GetPurchasedTickets);
+            TicketGroup.MapGet("/types", GetTicketTypes);
         }
 
         public static async Task<IResult> GetTickets(IRepository<Ticket> repo) 
@@ -49,7 +50,13 @@ namespace cinemaServer.Endpoints
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public static async Task<IResult> CreateTicket(IRepository<Ticket> repo, ICompUpcomingRepository<Screening> screeningRepo, IRepository<Seat> seatRepo, IRepository<ApplicationUser> userRepo, PostTicketDTO postTicket) 
+        public static async Task<IResult> CreateTicket(
+            IRepository<Ticket> repo, 
+            ICompUpcomingRepository<Screening> screeningRepo, 
+            IRepository<Seat> seatRepo, 
+            IRepository<ApplicationUser> userRepo, 
+            IRepository<TicketType> ticketTypeRepo,
+            PostTicketDTO postTicket) 
         {
             Screening? associatedScreening = await screeningRepo.GetSpecific(postTicket.ScreeningId, postTicket.MovieId);
             if (associatedScreening == null) 
@@ -64,11 +71,13 @@ namespace cinemaServer.Endpoints
             }
 
             IEnumerable<Seat> seatForTheater = await (seatRepo as SeatRepository)!.GetSeatsForTheater(associatedScreening.TheaterId);
+            IList<TicketType> allTicketTypes = await ticketTypeRepo.Get(null);
 
             List<Ticket> queuedTickets = new List<Ticket>();
-            foreach (int seatId in postTicket.SeatId) 
+            for (int i = 0; i < postTicket.SeatId.Count; i++)
             {
-                Seat? seat = seatForTheater.Where((s) => s.Id == seatId).FirstOrDefault();
+                Seat? seat = seatForTheater.Where((s) => s.Id == postTicket.SeatId.ElementAt(i)).FirstOrDefault();
+                TicketType? ticketType = allTicketTypes.Where((t) => t.Id == postTicket.TicketTypeId.ElementAt(i)).FirstOrDefault();
 
                 Ticket constructedTicket = new Ticket()
                 {
@@ -80,6 +89,8 @@ namespace cinemaServer.Endpoints
                     Customer = user,
                     Seat = seat,
                     SeatId = seat!.Id,
+                    TicketType = ticketType,
+                    TicketTypeId = ticketType!.Id,
                 };
                 queuedTickets.Add(constructedTicket);
             }
@@ -142,5 +153,16 @@ namespace cinemaServer.Endpoints
             return TypedResults.Ok(payload);
         }
 
+
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public static async Task<IResult> GetTicketTypes(IRepository<TicketType> repo) 
+        {
+            List<TicketType> dbTypes = await repo.Get(null);
+
+            Payload<List<TicketType>> payload = new Payload<List<TicketType>>(dbTypes);
+
+            return TypedResults.Ok(payload);
+        }
     }
 }

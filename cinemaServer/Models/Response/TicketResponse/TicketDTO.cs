@@ -17,5 +17,7 @@ namespace cinemaServer.Models.Response.TicketResponse
         public UserOnTicketDTO Customer { get; set; }
 
         public SeatIncludedWithTheaterDTO? Seat { get; set; }
+
+        public TicketType TicketType { get; set; }
     }
 }

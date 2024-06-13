@@ -15,6 +15,7 @@ namespace cinemaServer.Data
         private List<Screening> _screeningList;
         private List<ApplicationUser> _customerList;
         private List<Ticket> _ticketList;
+        private List<TicketType> _ticketTypeList;
         private List<Seat> _seatsList;
 
         public DatabaseSeeder(int randomSeed, int numberOfMovies, int numberOfTheaters, int numberOfCustomers, int numberOfScreenings, int numberOfTickets) 
@@ -26,12 +27,14 @@ namespace cinemaServer.Data
             _screeningList = new List<Screening>();
             _customerList = new List<ApplicationUser>();
             _ticketList = new List<Ticket>();
+            _ticketTypeList = new List<TicketType>();
             _seatsList = new List<Seat>();
 
             GenerateCustomers(numberOfCustomers);
             GenerateTheaters(numberOfTheaters);
             GenerateMovies(numberOfMovies);
             GenerateScreenings(numberOfScreenings);
+            GenerateTicketTypes();
             GenerateTickets(numberOfTickets); 
 
         }
@@ -202,6 +205,53 @@ namespace cinemaServer.Data
             return stringBuilder.ToString();
         }
 
+        private void GenerateTicketTypes() 
+        {
+            List<TicketType> types = new List<TicketType>()
+            {
+                new TicketType()
+                {
+                    Id = 1,
+                    Name = "Standard",
+                    Description = "Standard ticket for people between the age of 18 and 65.",
+                    Price = 5900,
+                    IsActive = true,
+                },
+                new TicketType()
+                {
+                    Id = 2,
+                    Name = "Student",
+                    Description = "Requires a valid student ID.",
+                    Price = 3900,
+                    IsActive = true,
+                },
+                new TicketType()
+                {
+                    Id = 3,
+                    Name = "Child",
+                    Description = "For people between the age of 3 and 18",
+                    Price = 19900,
+                    IsActive = true,
+                },
+                new TicketType()
+                {
+                    Id = 4,
+                    Name = "Senior",
+                    Description = "For people over the age of 65.",
+                    Price = 3900,
+                    IsActive = true,
+                },
+                new TicketType()
+                {
+                    Id = 5,
+                    Name = "Toddler",
+                    Description = "For children under the age of 3.",
+                    Price = 59900,
+                    IsActive = true,
+                },
+            };
+            _ticketTypeList.AddRange(types);
+        }
 
         public void GenerateTickets(int numberOfTickets) 
         {
@@ -212,6 +262,25 @@ namespace cinemaServer.Data
                 List<Seat> AvailableSeats = _seatsList.Where(s => s.TheaterId == screening.TheaterId).ToList();
                 Seat Seat = AvailableSeats.ElementAt(_rng.Next(AvailableSeats.Count));
 
+                int ticketTypeDeterminer = _rng.Next(1,101);
+                TicketType type;
+                if (ticketTypeDeterminer == 1)
+                {
+                    type = _ticketTypeList[4];
+                } else if (ticketTypeDeterminer < 5)
+                {
+                    type = _ticketTypeList[3];
+                } else if (ticketTypeDeterminer < 20)
+                {
+                    type = _ticketTypeList[2];
+                } else if (ticketTypeDeterminer < 50)
+                {
+                    type = _ticketTypeList[1];
+                } else 
+                {
+                    type = _ticketTypeList[0];
+                }
+
                 Ticket newTicket = new Ticket()
                 {
                     Id = i,
@@ -220,6 +289,7 @@ namespace cinemaServer.Data
                     TheaterId = screening.TheaterId,
                     SeatId = Seat.Id,
                     CustomerId = customerId,
+                    TicketTypeId = type.Id,
                 };
 
                 _ticketList.Add(newTicket);
@@ -232,5 +302,6 @@ namespace cinemaServer.Data
         public List<Movie> Movies { get { return _movieList; } }
         public List<ApplicationUser> Customers { get { return _customerList; } }
         public List<Ticket> Tickets { get { return _ticketList; } }
+        public List<TicketType> TicketTypes { get { return _ticketTypeList; } }
     }
 }
