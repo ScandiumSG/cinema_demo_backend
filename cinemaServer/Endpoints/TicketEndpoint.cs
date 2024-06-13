@@ -15,7 +15,7 @@ namespace cinemaServer.Endpoints
     {
         public static void TicketEndpointConfiguration(this WebApplication app) 
         {
-            var TicketGroup = app.MapGroup("/tickets/");
+            var TicketGroup = app.MapGroup("tickets");
 
             //TicketGroup.MapGet("/", GetTickets);
             TicketGroup.MapGet("/{id}", GetSpecificTicket);
@@ -29,20 +29,24 @@ namespace cinemaServer.Endpoints
 
         public static async Task<IResult> GetTickets(IRepository<Ticket> repo) 
         {
-            IEnumerable<Ticket> tickets = await repo.Get(100);
+            List<Ticket> tickets = await repo.Get(100);
 
-            return TypedResults.Ok(tickets);
+            List<TicketDTO> ticketDTOs = ResponseConverter.ConvertTicketToDTO(tickets);
+            Payload<List<TicketDTO>> payload = new Payload<List<TicketDTO>>(ticketDTOs);
+
+            return TypedResults.Ok(payload);
         }
 
-        public static async Task<IResult> GetSpecificTicket(IRepository<Ticket> repo, int id) 
+        public static async Task<IResult> GetSpecificTicket(IRepository<Ticket> repo, int id)
         {
             Ticket? ticket = await repo.GetSpecific(id);
-            if (ticket == null) 
+            if (ticket == null)
             {
                 return TypedResults.NotFound();
             }
 
-            var payload = ticket;
+            List<TicketDTO> ticketDTO = ResponseConverter.ConvertTicketToDTO(new List<Ticket>{ticket});
+            Payload<TicketDTO> payload = new Payload<TicketDTO>(ticketDTO.First());
 
             return TypedResults.Ok(payload);
         }
