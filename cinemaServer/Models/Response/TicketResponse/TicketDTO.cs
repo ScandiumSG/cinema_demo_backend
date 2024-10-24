@@ -12,12 +12,12 @@ namespace cinemaServer.Models.Response.TicketResponse
 
         public int ScreeningId { get; set; }
 
-        public ScreeningResponseForTicketDTO Screening { get; set; }
+        public ScreeningResponseForTicketDTO? Screening { get; set; }
 
-        public UserOnTicketDTO Customer { get; set; }
+        public UserOnTicketDTO? Customer { get; set; }
 
         public SeatIncludedWithTheaterDTO? Seat { get; set; }
 
-        public TicketType TicketType { get; set; }
+        public TicketType? TicketType { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace cinemaServer.Models.Response.TicketResponse
 
         public required SeatIncludedWithTheaterDTO Seat {  get; set; }
 
-        public TicketType TicketType { get; set; }
+        public required TicketType TicketType { get; set; }
     }
 }
