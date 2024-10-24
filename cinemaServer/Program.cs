@@ -130,6 +130,7 @@ app.MovieEndpointConfiguration();
 app.TheaterEndpointConfiguration();
 app.UserEndpointConfiguration();
 app.TicketEndpointConfiguration();
+app.CurratedContentConfiguration();
 
 //Configure auth endpoint
 app.AuthenticationEndpointConfiguration();
