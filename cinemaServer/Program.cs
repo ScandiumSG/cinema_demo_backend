@@ -61,6 +61,7 @@ builder.Services.AddScoped<IRepository<Ticket>, TicketRepository>();
 builder.Services.AddScoped<IRepository<TicketType>, Repository<TicketType>>();
 builder.Services.AddScoped<IRepository<Seat>, SeatRepository>();
 builder.Services.AddScoped<IRepository<ApplicationUser>, Repository<ApplicationUser>>();
+builder.Services.AddScoped<CurationRepository>();
 
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<UserManager<ApplicationUser>>();
