@@ -2,9 +2,9 @@
 {
     public class PostMovieDTO
     {
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public int Runtime { get; set; }
 

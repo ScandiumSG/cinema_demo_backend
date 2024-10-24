@@ -8,8 +8,8 @@
 
         public required string CustomerId { get; set; }
 
-        public ICollection<int> SeatId { get; set; }
+        public ICollection<int> SeatId { get; set; } = new List<int>();
 
-        public ICollection<int> TicketTypeId { get; set; }
+        public ICollection<int> TicketTypeId { get; set; } = new List<int>();
     }
 }
