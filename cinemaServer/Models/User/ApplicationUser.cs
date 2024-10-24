@@ -13,6 +13,6 @@ namespace cinemaServer.Models.User
         [Column("role")]
         public ERole Role { get; set; }
 
-        public ICollection<Ticket> Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }
