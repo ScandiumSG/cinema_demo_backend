@@ -63,7 +63,7 @@ namespace cinemaServer.Services
         private SigningCredentials CreateSigningCredentials()
         {
             var symmetricSecurityKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_configuration["JwtTokenSettings:SymmetricSecurityKey"])
+                Encoding.UTF8.GetBytes(_configuration["JwtTokenSettings:SymmetricSecurityKey"]!)
             );
 
             return new SigningCredentials(

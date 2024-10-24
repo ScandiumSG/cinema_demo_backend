@@ -106,7 +106,7 @@ namespace cinemaServer.Services
             {
                 Id = ticket.Id,
                 Seat = ConvertSeatToTheaterAccompanyDTO(ticket.Seat!),
-                TicketType = ticket.TicketType,
+                TicketType = ticket.TicketType!,
             };
         }
 
@@ -120,9 +120,9 @@ namespace cinemaServer.Services
                     Id = ticket.Id,
                     Screening = ConvertScreeningForTicket(ticket.Screening!) ?? null,
                     ScreeningId = ticket.ScreeningId,
-                    Customer = ConvertUserToTicketDTO(ticket.Customer!),
+                    Customer = ConvertUserToTicketDTO(ticket.Customer!) ?? null,
                     Seat = ConvertSeatToTheaterAccompanyDTO(ticket.Seat!),
-                    TicketType = ticket.TicketType,
+                    TicketType = ticket.TicketType!,
                 };
                 dtoTickets.Add(newTicket);
             }
