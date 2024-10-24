@@ -17,10 +17,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-          include-prerelease: true
 
       - name: Build with dotnet
         run: dotnet build --configuration Release
@@ -29,7 +28,7 @@ jobs:
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
@@ -45,20 +44,20 @@ jobs:
 
     steps:
       - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: .net-app
       
       - name: Login to Azure
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_7E4709A2DE5D4279A51DF0889F0330C2 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_633D6EF2E98A4015A89C44588ECAF10F }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_8491BD4C6FED4B92990DF2C0350611D6 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_235403593BFC4F11B62FF218E34D9D95 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_DC6D9DBBB9B04CE39D6831E6D1C4F4C8 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C4DEC1942C5349099E13CEBC3B76EFF1 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
+        uses: azure/webapps-deploy@v3
         with:
           app-name: 'sgcinemad'
           slot-name: 'Production'
